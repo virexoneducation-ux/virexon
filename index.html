@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virexon | فيركسون</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e1f2b;
+    --navy:#123047;
+    --navy-2:#1b4864;
+    --gold:#c8973a;
+    --gold-light:#e6c07b;
+    --paper:#f6f3ec;
+    --paper-2:#ece6d8;
+    --white:#ffffff;
+    --danger:#b0413e;
+    --ok:#3f7a5a;
+    --line: rgba(14,31,43,0.12);
+    --shadow: 0 12px 30px rgba(14,31,43,0.14);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Tajawal',sans-serif;line-height:1.7;}
+  h1,h2,h3,h4{font-family:'Cairo',sans-serif;margin:0 0 .4em;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  ::selection{background:var(--gold-light);}
+
+  /* ===== Header ===== */
+  header.top{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(180deg,var(--navy) 0%, var(--navy-2) 100%);
+    color:var(--white);
+    box-shadow:var(--shadow);
+  }
+  .top-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Cairo',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:.5px;}
+  .brand .mark{
+    width:38px;height:38px;border-radius:10px;
+    background:conic-gradient(from 220deg, var(--gold), var(--gold-light), var(--gold));
+    display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:900;font-family:'Cairo';
+  }
+  .brand .en{font-size:.6rem;letter-spacing:3px;opacity:.7;font-family:'Tajawal';display:block;font-weight:400;}
+  nav.links{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  nav.links button{
+    background:transparent;color:var(--white);padding:9px 16px;border-radius:999px;font-weight:600;font-size:.92rem;
+    transition:.2s;
+  }
+  nav.links button:hover{background:rgba(255,255,255,.12);}
+  nav.links button.active{background:var(--gold);color:var(--navy);}
+  .user-chip{background:rgba(255,255,255,.1);padding:8px 14px;border-radius:999px;font-size:.85rem;display:flex;gap:8px;align-items:center;}
+  .user-chip button{background:transparent;color:var(--gold-light);font-weight:700;padding:0;}
+
+  main{max-width:1180px;margin:0 auto;padding:36px 24px 80px;min-height:60vh;}
+
+  /* ===== Hero ===== */
+  .hero{
+    display:block;
+    padding:50px 0 30px;
+  }
+  .hero .eyebrow{color:var(--gold);font-weight:700;letter-spacing:2px;font-size:.85rem;margin-bottom:10px;}
+  .hero h1{font-size:2.6rem;color:var(--navy);line-height:1.35;max-width:760px;}
+  .hero p{color:#3d4f5b;font-size:1.08rem;max-width:600px;}
+  .hero-panel{
+    background:var(--navy);color:var(--white);border-radius:20px;padding:30px;box-shadow:var(--shadow);
+    background-image:radial-gradient(circle at 90% 10%, rgba(200,151,58,.25), transparent 55%);
+  }
+  .hero-panel .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:.95rem;}
+  .hero-panel .row:last-child{border-bottom:none;}
+  .hero-panel .price{color:var(--gold-light);font-weight:700;font-family:'Cairo';}
+
+  /* ===== Subject cards ===== */
+  .subjects-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:20px;}
+  @media(max-width:760px){.subjects-grid{grid-template-columns:1fr;} .hero{grid-template-columns:1fr;}}
+  .subj-card{
+    background:var(--white);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow);
+    border-top:5px solid var(--gold);cursor:pointer;transition:.25s;position:relative;overflow:hidden;
+  }
+  .subj-card:hover{transform:translateY(-4px);}
+  .subj-card .icon{font-size:2.2rem;}
+  .subj-card h3{color:var(--navy);font-size:1.4rem;margin-top:10px;}
+  .subj-card .teacher{color:var(--gold);font-weight:700;font-size:.95rem;}
+  .subj-card .desc{color:#5a6b76;font-size:.9rem;margin-top:8px;}
+
+  /* ===== breadcrumb / section header ===== */
+  .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:10px;}
+  .breadcrumb{color:#5a6b76;font-size:.9rem;}
+  .breadcrumb button{color:var(--navy-2);font-weight:700;}
+
+  /* ===== grade grid ===== */
+  .grade-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px;}
+  .grade-card{
+    background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);
+    border:1px solid var(--line);transition:.2s;
+  }
+  .grade-card:hover{border-color:var(--gold);}
+  .grade-card h4{color:var(--navy);}
+  .grade-card .count{color:#7a8891;font-size:.85rem;margin-bottom:14px;}
+  .btn{
+    display:inline-block;padding:10px 18px;border-radius:10px;background:var(--navy);color:var(--white);
+    font-weight:700;font-size:.9rem;transition:.2s;
+  }
+  .btn:hover{background:var(--navy-2);}
+  .btn.gold{background:var(--gold);color:var(--navy);}
+  .btn.gold:hover{background:var(--gold-light);}
+  .btn.outline{background:transparent;border:1.5px solid var(--navy);color:var(--navy);}
+  .btn.danger{background:var(--danger);color:#fff;}
+  .btn.sm{padding:6px 12px;font-size:.8rem;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* ===== lessons list ===== */
+  .lesson-row{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:12px;
+  }
+  .lesson-row .lt{display:flex;align-items:center;gap:14px;}
+  .lesson-num{
+    width:34px;height:34px;border-radius:50%;background:var(--paper-2);color:var(--navy);font-weight:700;
+    display:flex;align-items:center;justify-content:center;font-family:'Cairo';flex-shrink:0;
+  }
+  .lock-badge{font-size:.78rem;padding:4px 10px;border-radius:999px;font-weight:700;}
+  .lock-badge.locked{background:#f3e3e3;color:var(--danger);}
+  .lock-badge.open{background:#e2efe7;color:var(--ok);}
+
+  .empty{
+    text-align:center;padding:50px 20px;color:#8a97a1;background:var(--white);border-radius:var(--radius);border:1.5px dashed var(--line);
+  }
+
+  /* ===== video / player ===== */
+  .player-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+  .player-wrap iframe,.player-wrap video{width:100%;aspect-ratio:16/9;display:block;border:none;}
+  .watermark{
+    position:absolute;inset:0;pointer-events:none;display:flex;flex-wrap:wrap;align-content:space-around;justify-content:space-around;
+    opacity:.35;transform:rotate(-18deg) scale(1.3);color:#fff;font-size:.85rem;font-weight:700;user-select:none;
+  }
+  .no-record-note{
+    background:#fdf3e3;border:1px solid var(--gold-light);color:#7a5b1a;padding:12px 16px;border-radius:10px;font-size:.85rem;margin-top:14px;
+  }
+  .player-wrap{user-select:none;-webkit-user-select:none;}
+  .rec-overlay{
+    position:absolute;inset:0;background:#000;display:none;align-items:center;justify-content:center;
+    color:#fff;font-weight:700;text-align:center;padding:24px;z-index:5;font-family:'Cairo',sans-serif;line-height:1.8;
+  }
+  @media print{ body{display:none !important;} }
+
+  /* ===== modal ===== */
+  .overlay{position:fixed;inset:0;background:rgba(14,31,43,.55);backdrop-filter:blur(2px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .modal{background:var(--white);border-radius:18px;max-width:460px;width:100%;padding:30px;box-shadow:var(--shadow);max-height:90vh;overflow:auto;}
+  .modal h3{color:var(--navy);}
+  .modal.wide{max-width:760px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .field input,.field select{
+    width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:.95rem;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--gold);}
+  .modal-close{float:left;background:transparent;color:#8a97a1;font-size:1.3rem;}
+  .tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--paper-2);padding:4px;border-radius:10px;}
+  .tabs button{flex:1;padding:9px;border-radius:8px;background:transparent;font-weight:700;color:#5a6b76;}
+  .tabs button.active{background:var(--white);color:var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.08);}
+  .msg{padding:10px 14px;border-radius:10px;font-size:.85rem;margin-bottom:14px;}
+  .msg.err{background:#fbe6e6;color:var(--danger);}
+  .msg.ok{background:#e2efe7;color:var(--ok);}
+  .pay-box{background:var(--paper-2);border-radius:12px;padding:16px;margin-bottom:12px;}
+  .pay-box .lbl{font-size:.78rem;color:#7a8891;font-weight:700;}
+  .pay-box .val{font-family:'Cairo';font-weight:700;color:var(--navy);font-size:1.05rem;word-break:break-all;}
+
+  footer{background:var(--navy);color:rgba(255,255,255,.65);padding:26px 24px;text-align:center;font-size:.85rem;}
+  footer button{color:rgba(255,255,255,.4);text-decoration:underline;}
+
+  /* admin */
+  .admin-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;}
+  @media(max-width:760px){.admin-grid{grid-template-columns:1fr;}}
+  .admin-side{background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);height:fit-content;}
+  .admin-side button{display:block;width:100%;text-align:right;padding:10px 12px;border-radius:8px;background:transparent;color:var(--navy);font-weight:600;margin-bottom:4px;}
+  .admin-side button.active{background:var(--paper-2);}
+  .admin-panel-box{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+  .lesson-edit-row{display:grid;grid-template-columns:34px 1fr 1fr auto auto;gap:10px;align-items:center;margin-bottom:10px;}
+  @media(max-width:640px){.lesson-edit-row{grid-template-columns:1fr;}}
+  .lesson-edit-row input{padding:9px 12px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;}
+  .chk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:14px 0;}
+  .chk-item{display:flex;align-items:center;gap:8px;background:var(--paper-2);padding:8px 12px;border-radius:8px;font-size:.85rem;}
+  .warn-box{background:#fdf3e3;border:1px solid var(--gold-light);color:#7a5b1a;padding:10px 14px;border-radius:10px;font-size:.85rem;}
+
+  /* ===== quiz (student) ===== */
+  .quiz-box{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:20px;border-top:5px solid var(--navy-2);}
+  .quiz-q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+  .quiz-q:last-of-type{border-bottom:none;}
+  .quiz-q-title{font-weight:700;color:var(--navy);margin-bottom:10px;font-family:'Cairo',sans-serif;}
+  .quiz-opts{display:flex;flex-direction:column;gap:8px;}
+  .quiz-opt{display:flex;align-items:center;gap:10px;background:var(--paper-2);padding:10px 14px;border-radius:10px;font-size:.92rem;cursor:pointer;}
+  .quiz-opt:hover{background:var(--paper);}
+  .quiz-result{padding:18px;border-radius:12px;font-weight:700;font-family:'Cairo',sans-serif;text-align:center;margin-bottom:14px;font-size:1.05rem;}
+  .quiz-result.good{background:#e2efe7;color:var(--ok);}
+  .quiz-result.bad{background:#fbe6e6;color:var(--danger);}
+  .quiz-score{margin-top:8px;font-size:1.3rem;}
+
+  /* ===== admin quiz editor ===== */
+  .quiz-admin{background:var(--paper);border-radius:10px;padding:14px;margin-top:10px;}
+  .quiz-admin-q{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;}
+  .quiz-admin-q input[type="text"]{padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;width:100%;margin-bottom:6px;}
+  .quiz-admin-opt-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-bottom:6px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://czqbxjjyugyvvmfijiil.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_zO32ExtGpYc5gC52VOkAww_tycDDMz6";
+const sb = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
+);
+</script>
+<script>
+(function(){
+"use strict";
+
+/* ---------------- constants ---------------- */
+const PRICE_LESSON = 15;
+const PRICE_MONTH = 100;
+const MONTH_LESSONS = 8;
+const WHATSAPP_NUMBER = "201107558827";
+const VODAFONE_CASH = "+20 10 19311539";
+const INSTAPAY_LINK = "https://ipn.eg/S/dinafaisal1010/instapay/8IY2Bm";
+
+function mkLessons(titles){
+  return titles.map((t,i)=>({id:"l"+(i+1), title:t, link:"", quiz:[]}));
+}
+
+const DEFAULT_CONTENT = {
+  math: {
+    id:"math", name:"الرياضيات", teacher:"مستر مصطفى عمران", icon:"📐",
+    desc:"شرح مبسط ومنظم لمادة الرياضيات من الابتدائي حتى الثانوي.",
+    grades: [
+      {id:"g4", name:"الصف الرابع الابتدائي", lessons: mkLessons([
+        "الأعداد حتى الملايين والقيمة المكانية",
+        "جمع وطرح الأعداد الكبيرة",
+        "ضرب عدد في عددين",
+        "القسمة على رقم واحد",
+        "الكسور الاعتيادية ومقارنتها",
+        "القياس: الطول والكتلة والزمن",
+        "الزوايا وأنواعها",
+        "الأشكال الهندسية المستوية"
+      ])},
+      {id:"g5", name:"الصف الخامس الابتدائي", lessons: mkLessons([
+        "الأعداد الصحيحة والعمليات عليها",
+        "الكسور الاعتيادية والعشرية",
+        "النسبة والتناسب",
+        "الزوايا وأنواعها",
+        "المحيط والمساحة",
+        "الأشكال الرباعية"
+      ])},
+      {id:"g6", name:"الصف السادس الابتدائي", lessons: mkLessons([
+        "الأعداد النسبية",
+        "الأسس والجذور",
+        "المعادلات البسيطة",
+        "الدائرة وأجزاؤها",
+        "الحجم ووحدات القياس",
+        "الإحصاء والاحتمالات"
+      ])},
+      {id:"prep1", name:"الصف الأول الإعدادي", lessons: mkLessons([
+        "مجموعات الأعداد",
+        "الأعداد الصحيحة والنسبية",
+        "المعادلات من الدرجة الأولى",
+        "النسبة والتناسب والتشابه",
+        "الإحصاء وتمثيل البيانات",
+        "الهندسة المستوية"
+      ])},
+      {id:"prep2", name:"الصف الثاني الإعدادي", lessons: mkLessons([
+        "القوى والجذور",
+        "حساب المثلثات",
+        "تحليل المقادير الجبرية",
+        "المعادلات والمتباينات",
+        "المستقيمات المتوازية",
+        "تشابه المثلثات"
+      ])},
+      {id:"prep3", name:"الصف الثالث الإعدادي", lessons: mkLessons([
+        "العمليات على الأعداد الحقيقية",
+        "حل المعادلات التربيعية",
+        "الإحصاء والمقاييس",
+        "الزوايا المركزية والمحيطية",
+        "حساب المثلثات",
+        "الهندسة الفراغية"
+      ])},
+      {id:"sec1", name:"الصف الأول الثانوي", lessons: mkLessons([
+        "المنطق الرياضي",
+        "نظرية المجموعات",
+        "كثيرات الحدود",
+        "حساب المثلثات",
+        "الهندسة الفراغية",
+        "الإحصاء"
+      ])},
+      {id:"sec2", name:"الصف الثاني الثانوي", lessons: mkLessons([
+        "النهايات والاتصال",
+        "المشتقات وتطبيقاتها",
+        "حساب المثلثات المتقدم",
+        "الهندسة التحليلية: الخط المستقيم",
+        "الدوال وأنواعها",
+        "الاستدلال الرياضي"
+      ])}
+    ]
+  },
+  acc: {
+    id:"acc", name:"المحاسبة", teacher:"مستر هشام سمير", icon:"📊",
+    desc:"أساسيات ومهارات المحاسبة لطلاب الثانوي العام والتجارة.",
+    grades: [
+      {id:"sec2acc", name:"الصف الثاني الثانوي", lessons: mkLessons([
+        "مقدمة في مبادئ المحاسبة",
+        "القيد المزدوج ودفتر اليومية",
+        "دفتر الأستاذ وميزان المراجعة",
+        "التسويات الجردية",
+        "حسابات الأستاذ الختامية",
+        "الميزانية العمومية"
+      ])},
+      {id:"tj1", name:"الصف الأول تجارة", lessons: mkLessons([
+        "مدخل إلى علم المحاسبة",
+        "المعادلة المحاسبية",
+        "دورة القيد المحاسبي",
+        "دفتر اليومية العامة",
+        "ميزان المراجعة",
+        "الأصول والخصوم"
+      ])},
+      {id:"tj2", name:"الصف الثاني تجارة", lessons: mkLessons([
+        "محاسبة المخزون السلعي",
+        "الأصول الثابتة والإهلاك",
+        "المخصصات والاحتياطيات",
+        "أوراق القبض والدفع",
+        "تسوية حساب البنك",
+        "الحسابات الختامية والميزانية"
+      ])},
+      {id:"tj3", name:"الصف الثالث تجارة", lessons: mkLessons([
+        "محاسبة شركات الأشخاص",
+        "محاسبة شركات الأموال",
+        "القوائم المالية الختامية",
+        "التحليل المالي للقوائم",
+        "مبادئ محاسبة التكاليف",
+        "مراجعة شاملة قبل الثانوية العامة"
+      ])}
+    ]
+  }
+};
+
+/* ---------------- state ---------------- */
+let content = null;         // shared site content
+let currentUser = null;     // {email}
+let grants = [];            // unlocked lesson ids for currentUser
+let route = {name:"home"};  // client-side router
+let adminUnlocked = false;
+let adminHasPassword = false;
+const ADMIN_FIXED_PASSWORD = "1792006"; // كلمة مرور ثابتة وموحدة للوحة التحكم من أي جهاز
+let toast = null;
+let quizResults = {};      // globalLessonId -> {score, total}
+let quizEditorOpen = {};   // globalLessonId -> bool (admin quiz editor visibility)
+
+/* ---------------- crypto helpers ---------------- */
+async function hashText(text){
+  const enc = new TextEncoder().encode(text);
+  const buf = await crypto.subtle.digest("SHA-256", enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+/* ---------------- storage shim (localStorage-backed replacement for window.storage) ---------------- */
+window.storage = {
+  async get(key, shared){
+    if(!Object.prototype.hasOwnProperty.call(localStorage, key)){
+      throw new Error("key not found: "+key);
+    }
+    return { key, value: localStorage.getItem(key), shared: !!shared };
+  },
+  async set(key, value, shared){
+    localStorage.setItem(key, value);
+    return { key, value, shared: !!shared };
+  },
+  async delete(key, shared){
+    const existed = Object.prototype.hasOwnProperty.call(localStorage, key);
+    localStorage.removeItem(key);
+    return { key, deleted: existed, shared: !!shared };
+  },
+  async list(prefix, shared){
+    const keys = [];
+    for(let i=0;i<localStorage.length;i++){
+      const k = localStorage.key(i);
+      if(!prefix || k.indexOf(prefix)===0) keys.push(k);
+    }
+    return { keys, prefix, shared: !!shared };
+  }
+};
+
+/* ---------------- storage helpers ---------------- */
+async function loadContent(){
+  try{
+    const r = await window.storage.get("site:content", true);
+    content = JSON.parse(r.value);
+  }catch(e){
+    content = DEFAULT_CONTENT;
+    await window.storage.set("site:content", JSON.stringify(content), true);
+  }
+}
+async function saveContent(){
+  await window.storage.set("site:content", JSON.stringify(content), true);
+}
+async function getUser(email){
+  try{
+    const {data, error} = await sb.from("students").select("id,email").eq("email", email).maybeSingle();
+    if(error) throw error;
+    return data;
+  }catch(e){ console.error(e); return null; }
+}
+async function ensureStudentRow(id, email){
+  const {error} = await sb.from("students").upsert({id, email}, {onConflict:"id"});
+  if(error) console.error(error);
+}
+async function getGrants(studentId){
+  try{
+    const {data, error} = await sb.from("subscriptions").select("lesson_id").eq("student_id", studentId);
+    if(error) throw error;
+    return (data||[]).map(r=>r.lesson_id);
+  }catch(e){ console.error(e); return []; }
+}
+async function setGrants(studentId, list){
+  const {error:delErr} = await sb.from("subscriptions").delete().eq("student_id", studentId);
+  if(delErr){ console.error(delErr); throw delErr; }
+  if(list.length>0){
+    const rows = list.map(lid=>({student_id:studentId, lesson_id:lid}));
+    const {error:insErr} = await sb.from("subscriptions").insert(rows);
+    if(insErr){ console.error(insErr); throw insErr; }
+  }
+}
+function supabaseErrorToArabic(error){
+  const msg = (error && error.message) || "";
+  if(msg.includes("already registered")) return "هذا الإيميل مسجل بالفعل، سجّل الدخول.";
+  if(msg.includes("Invalid login credentials")) return "الإيميل أو كلمة المرور غير صحيحة.";
+  if(msg.includes("Password should be at least")) return "كلمة المرور يجب أن تكون 6 أحرف على الأقل.";
+  if(msg.includes("Unable to validate email")) return "صيغة الإيميل غير صحيحة.";
+  return msg || "حدث خطأ غير متوقع، حاول مرة أخرى.";
+}
+async function getAdminPass(){
+  try{
+    const r = await window.storage.get("admin:pass", true);
+    return r.value;
+  }catch(e){ return null; }
+}
+async function setAdminPass(hash){
+  await window.storage.set("admin:pass", hash, true);
+}
+
+/* ---------------- utils ---------------- */
+function esc(s){ return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function setToast(t){ toast = t; render(); setTimeout(()=>{ if(toast===t){toast=null; render();} },3500); }
+function findSubject(id){ return content[id]; }
+function findGrade(subjId,gradeId){ return content[subjId].grades.find(g=>g.id===gradeId); }
+function embedUrl(link){
+  if(!link) return "";
+  try{
+    const u = new URL(link);
+    if(u.hostname.includes("youtube.com") || u.hostname.includes("youtu.be")){
+      let id = u.searchParams.get("v");
+      if(!id && u.hostname.includes("youtu.be")) id = u.pathname.slice(1);
+      if(u.pathname.includes("/embed/")) return link+(link.includes("?")?"&":"?")+"enablejsapi=1";
+      if(id) return "https://www.youtube.com/embed/"+id+"?enablejsapi=1";
+    }
+    if(u.hostname.includes("drive.google.com")){
+      const m = link.match(/\/d\/([^/]+)/);
+      if(m) return "https://drive.google.com/file/d/"+m[1]+"/preview";
+    }
+  }catch(e){}
+  return link;
+}
+
+/* ---------------- render root ---------------- */
+function render(){
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    ${headerHtml()}
+    <main>${toast? `<div class="msg ${toast.type}">${esc(toast.text)}</div>`:""}${routeHtml()}</main>
+    ${footerHtml()}
+    ${modalHtml()}
+  `;
+  bindEvents();
+}
+
+function headerHtml(){
+  return `
+  <header class="top"><div class="top-inner">
+    <div class="brand" style="cursor:pointer" data-nav='{"name":"home"}'>
+      <span class="mark">V</span>
+      <span>فيركسون<span class="en">VIREXON</span></span>
+    </div>
+    <nav class="links">
+      <button data-nav='{"name":"home"}' class="${route.name==='home'?'active':''}">الرئيسية</button>
+      <button data-nav='{"name":"subject","id":"math"}' class="${route.name==='subject'&&route.id==='math'?'active':''}">الرياضيات</button>
+      <button data-nav='{"name":"subject","id":"acc"}' class="${route.name==='subject'&&route.id==='acc'?'active':''}">المحاسبة</button>
+      ${currentUser? `<div class="user-chip">👤 ${esc(currentUser.email)} <button data-action="logout">خروج</button></div>`
+                    : `<button class="btn gold sm" data-action="open-auth">تسجيل الدخول</button>`}
+      <button data-nav='{"name":"admin"}' style="opacity:.55;font-size:.78rem;">لوحة التحكم</button>
+    </nav>
+  </div></header>`;
+}
+
+function footerHtml(){
+  return `<footer>
+    © ${new Date().getFullYear()} Virexon — منصة فيركسون التعليمية · الدفع عبر فودافون كاش أو إنستاباي · للتواصل واتساب
+    <br><button data-nav='{"name":"admin"}'>دخول الإدارة</button>
+  </footer>`;
+}
+
+function routeHtml(){
+  if(route.name==="home") return homeHtml();
+  if(route.name==="subject") return subjectHtml(route.id);
+  if(route.name==="grade") return gradeHtml(route.sid, route.gid);
+  if(route.name==="lesson") return lessonHtml(route.sid, route.gid, route.lid);
+  if(route.name==="admin") return adminHtml();
+  return homeHtml();
+}
+
+function homeHtml(){
+  return `
+  <section class="hero">
+    <div>
+      <div class="eyebrow">منصة تعليمية متكاملة</div>
+      <h1>فيركسون — تعلّم الرياضيات والمحاسبة بأسلوب واضح ومنظم</h1>
+      <p>دروس فيديو مرتبة لكل صف دراسي، مع نظام اشتراك آمن يضمن أن المحتوى يصل لمن دفع فقط.</p>
+      <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn gold" data-nav='{"name":"subject","id":"math"}'>ابدأ بالرياضيات</button>
+        <button class="btn outline" data-nav='{"name":"subject","id":"acc"}'>ابدأ بالمحاسبة</button>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2 style="color:var(--navy);margin-bottom:20px;">المواد الدراسية</h2>
+    <div class="subjects-grid">
+      ${["math","acc"].map(sid=>{
+        const s = content[sid];
+        const gradesCount = s.grades.length;
+        return `<div class="subj-card" data-nav='{"name":"subject","id":"${sid}"}'>
+          <div class="icon">${s.icon}</div>
+          <h3>${esc(s.name)}</h3>
+          <div class="teacher">${esc(s.teacher)}</div>
+          <div class="desc">${esc(s.desc)} — ${gradesCount} مراحل دراسية.</div>
+          <div style="margin-top:16px;"><span class="btn sm outline">عرض الصفوف ←</span></div>
+        </div>`;
+      }).join("")}
+    </div>
+  </section>`;
+}
+
+function subjectHtml(sid){
+  const s = content[sid];
+  if(!s) return `<div class="empty">المادة غير موجودة</div>`;
+  return `
+  <div class="section-head">
+    <div class="breadcrumb"><button data-nav='{"name":"home"}'>الرئيسية</button> / ${esc(s.name)}</div>
+  </div>
+  <h1 style="color:var(--navy)">${s.icon} ${esc(s.name)}</h1>
+  <p style="color:#5a6b76;margin-bottom:26px;">${esc(s.teacher)} — اختر صفك الدراسي لعرض الحصص المتاحة.</p>
+  <div class="grade-grid">
+    ${s.grades.map(g=>`
+      <div class="grade-card">
+        <h4>${esc(g.name)}</h4>
+        <div class="count">${g.lessons.length} حصة متاحة</div>
+        <button class="btn" data-nav='{"name":"grade","sid":"${sid}","gid":"${g.id}"}'>عرض الحصص</button>
+      </div>`).join("")}
+  </div>`;
+}
+
+function gradeHtml(sid,gid){
+  const s = content[sid]; const g = s && findGrade(sid,gid);
+  if(!g) return `<div class="empty">الصف غير موجود</div>`;
+  return `
+  <div class="section-head">
+    <div class="breadcrumb">
+      <button data-nav='{"name":"home"}'>الرئيسية</button> /
+      <button data-nav='{"name":"subject","id":"${sid}"}'>${esc(s.name)}</button> /
+      ${esc(g.name)}
+    </div>
+  </div>
+  <h1 style="color:var(--navy)">${esc(g.name)} — ${esc(s.name)}</h1>
+  <p style="color:#5a6b76;margin-bottom:26px;">${esc(s.teacher)}</p>
+  ${g.lessons.length===0? `<div class="empty">لم يتم إضافة حصص لهذا الصف بعد.</div>` : `
+    ${g.lessons.map((l,i)=>{
+      const lid = subjLessonId(sid,gid,l.id);
+      const unlocked = currentUser && grants.includes(lid);
+      return `<div class="lesson-row">
+        <div class="lt">
+          <div class="lesson-num">${i+1}</div>
+          <div>
+            <div style="font-weight:700;color:var(--navy)">${esc(l.title)}</div>
+            <span class="lock-badge ${unlocked?'open':'locked'}">${unlocked? "متاحة ✓" : "مقفلة 🔒"}</span>
+          </div>
+        </div>
+        <button class="btn ${unlocked?'gold':'outline'} sm" data-nav='{"name":"lesson","sid":"${sid}","gid":"${gid}","lid":"${l.id}"}'>
+          ${unlocked? "مشاهدة" : "تفاصيل الاشتراك"}
+        </button>
+      </div>`;
+    }).join("")}
+  `}`;
+}
+
+function subjLessonId(sid,gid,lid){ return sid+"__"+gid+"__"+lid; }
+
+function lessonHtml(sid,gid,lid){
+  const s = content[sid]; const g = s && findGrade(sid,gid);
+  const l = g && g.lessons.find(x=>x.id===lid);
+  if(!l) return `<div class="empty">الحصة غير موجودة</div>`;
+  const globalId = subjLessonId(sid,gid,lid);
+  const unlocked = currentUser && grants.includes(globalId);
+  return `
+  <div class="section-head">
+    <div class="breadcrumb">
+      <button data-nav='{"name":"home"}'>الرئيسية</button> /
+      <button data-nav='{"name":"subject","id":"${sid}"}'>${esc(s.name)}</button> /
+      <button data-nav='{"name":"grade","sid":"${sid}","gid":"${gid}"}'>${esc(g.name)}</button> /
+      ${esc(l.title)}
+    </div>
+  </div>
+  <h1 style="color:var(--navy)">${esc(l.title)}</h1>
+  ${unlocked? `
+    <div class="player-wrap" oncontextmenu="return false">
+      ${l.link? `<iframe id="playerFrame" src="${esc(embedUrl(l.link))}" allowfullscreen oncontextmenu="return false"></iframe>`
+               : `<div style="color:#fff;padding:60px;text-align:center;">لم يتم رفع رابط الفيديو بعد.</div>`}
+      <div class="watermark">${Array(10).fill(currentUser.email+" · Virexon").map(t=>`<span>${esc(t)}</span>`).join("")}</div>
+      <div id="recOverlay" class="rec-overlay">🔒 تم إخفاء الفيديو تلقائياً<br>ارجع إلى صفحة الحصة داخل المتصفح لمتابعة المشاهدة</div>
+    </div>
+    <div class="no-record-note">⚠️ هذا الفيديو مخصص لحسابك (${esc(currentUser.email)}) فقط، ويمنع تصويره أو إعادة نشره. النقر بزر الفأرة الأيمن والتحديد معطّلان داخل المشغّل، ويتم إخفاء الفيديو تلقائياً إذا غادرت نافذة المتصفح.</div>
+    ${quizSectionHtml(sid,gid,lid,globalId,l)}
+  ` : `
+    <div class="empty" style="text-align:right;padding:36px;">
+      <h3 style="color:var(--navy)">هذه الحصة مقفلة 🔒</h3>
+      <p style="color:#5a6b76">اشترك الآن للوصول إلى هذا الدرس. الحصة الواحدة بـ ${PRICE_LESSON} جنيه، أو الاشتراك الشهري بـ ${PRICE_MONTH} جنيه (${MONTH_LESSONS} حصص).</p>
+      <button class="btn gold" data-action="open-pay">عرض طريقة الدفع</button>
+    </div>
+  `}`;
+}
+
+/* ---------------- quiz (student side) ---------------- */
+function quizSectionHtml(sid,gid,lid,globalId,l){
+  const quiz = l.quiz || [];
+  if(quiz.length===0) return "";
+  const result = quizResults[globalId];
+  let html = `<div class="quiz-box"><h3 style="color:var(--navy)">📝 اختبار الحصة</h3>`;
+  if(result){
+    const pct = Math.round((result.score/result.total)*100);
+    const good = pct>=60;
+    html += `<div class="quiz-result ${good?'good':'bad'}">
+      ${good? "🎉 أحسنت! أداء جيد." : "😕 للأسف، النتيجة ضعيفة، حاول مرة أخرى."}
+      <div class="quiz-score">${result.score} / ${result.total} (${pct}%)</div>
+    </div>
+    <button class="btn outline sm" data-action="retake-quiz" data-gid2="${esc(globalId)}">إعادة الاختبار</button>`;
+  } else {
+    html += quiz.map((q,qi)=>`
+      <div class="quiz-q">
+        <div class="quiz-q-title">${qi+1}. ${esc(q.q)}</div>
+        <div class="quiz-opts">
+          ${(q.o||[]).map((opt,oi)=>`
+            <label class="quiz-opt">
+              <input type="radio" name="quizq_${esc(globalId)}_${qi}" value="${oi}">
+              ${esc(opt)}
+            </label>`).join("")}
+        </div>
+      </div>`).join("");
+    html += `<button class="btn gold" data-action="submit-quiz" data-gid2="${esc(globalId)}">تسليم الإجابة</button>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function gradeQuiz(globalId, quiz){
+  let score = 0;
+  quiz.forEach((q,qi)=>{
+    const checked = document.querySelector(`input[name="quizq_${CSS.escape(globalId)}_${qi}"]:checked`);
+    if(checked && Number(checked.value)===Number(q.correct)) score++;
+  });
+  return {score, total: quiz.length};
+}
+
+/* interactive sound feedback (Web Audio, no external files) */
+function playResultSound(good){
+  try{
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    const notes = good? [523.25,659.25,783.99,1046.5] : [400,320,240];
+    let t = ctx.currentTime;
+    notes.forEach((freq,i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = good? "triangle":"sawtooth";
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.18, t+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, t+0.28);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t+0.3);
+      t += good? 0.16 : 0.22;
+    });
+  }catch(e){}
+}
+
+/* ---------------- admin ---------------- */
+let adminTab = "content";
+function adminHtml(){
+  if(!adminHasPassword){
+    return `<div class="modal" style="margin:40px auto;max-width:420px;">
+      <h3>إعداد لوحة التحكم لأول مرة</h3>
+      <p style="color:#5a6b76;font-size:.9rem">لم يتم تعيين كلمة مرور للإدارة بعد. اختر كلمة مرور قوية — هي التحكم الكامل في المنصة.</p>
+      <div class="field"><label>كلمة مرور جديدة</label><input type="password" id="newAdminPass"></div>
+      <button class="btn gold" data-action="set-admin-pass">حفظ كلمة المرور</button>
+    </div>`;
+  }
+  if(!adminUnlocked){
+    return `<div class="modal" style="margin:40px auto;max-width:420px;">
+      <h3>دخول لوحة التحكم</h3>
+      <div class="field"><label>كلمة المرور</label><input type="password" id="adminPassInput"></div>
+      <button class="btn gold" data-action="admin-login">دخول</button>
+    </div>`;
+  }
+  return `<div class="admin-grid">
+    <div class="admin-side">
+      <button class="${adminTab==='content'?'active':''}" data-action="admin-tab" data-tab="content">إدارة المحتوى والفيديوهات</button>
+      <button class="${adminTab==='access'?'active':''}" data-action="admin-tab" data-tab="access">تفعيل اشتراكات الطلاب</button>
+      <button class="${adminTab==='pass'?'active':''}" data-action="admin-tab" data-tab="pass">تغيير كلمة المرور</button>
+      <hr style="margin:14px 0;border-color:var(--line)">
+      <button data-action="admin-logout" style="color:var(--danger)">تسجيل خروج الإدارة</button>
+    </div>
+    <div class="admin-panel-box">${adminTab==='content'?adminContentHtml():adminTab==='access'?adminAccessHtml():adminPassHtml()}</div>
+  </div>`;
+}
+
+function adminContentHtml(){
+  return `
+  <h3>إدارة المواد والحصص</h3>
+  ${["math","acc"].map(sid=>{
+    const s = content[sid];
+    return `<div style="margin-bottom:26px;">
+      <h4 style="color:var(--gold)">${s.icon} ${esc(s.name)} — ${esc(s.teacher)}</h4>
+      ${s.grades.map(g=>`
+        <div style="background:var(--paper);border-radius:10px;padding:14px 16px;margin-bottom:10px;">
+          <div style="font-weight:700;margin-bottom:8px;">${esc(g.name)}</div>
+          ${g.lessons.map((l,i)=>{
+            const globalId = subjLessonId(sid,g.id,l.id);
+            const qCount = (l.quiz||[]).length;
+            return `<div class="lesson-edit-row">
+              <div class="lesson-num">${i+1}</div>
+              <input type="text" value="${esc(l.title)}" data-edit="title" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}" placeholder="عنوان الحصة">
+              <input type="text" value="${esc(l.link||'')}" data-edit="link" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}" placeholder="رابط الفيديو">
+              <button class="btn outline sm" data-action="toggle-quiz-editor" data-gid2="${esc(globalId)}">📝 اختبار الحصة (${qCount})</button>
+              <button class="btn danger sm" data-action="del-lesson" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}">حذف</button>
+            </div>
+            ${quizEditorOpen[globalId] ? quizAdminEditorHtml(sid,g.id,l.id,l) : ""}`;
+          }).join("")}
+          <button class="btn outline sm" data-action="add-lesson" data-sid="${sid}" data-gid="${g.id}">+ إضافة حصة</button>
+        </div>`).join("")}
+    </div>`;
+  }).join("")}
+  <button class="btn gold" data-action="save-content">💾 حفظ كل التعديلات</button>
+  `;
+}
+
+function quizAdminEditorHtml(sid,gid,lid,l){
+  const quiz = l.quiz || [];
+  let html = `<div class="quiz-admin">`;
+  html += `<div class="warn-box" style="margin-bottom:12px;">أضف سؤال، ثم اكتب 4 اختيارات، وحدد الإجابة الصحيحة من القائمة. لا تنسَ الضغط على "حفظ كل التعديلات" أسفل الصفحة بعد الانتهاء.</div>`;
+  if(quiz.length===0){
+    html += `<div style="color:#7a8891;font-size:.85rem;margin-bottom:10px;">لا توجد أسئلة بعد لهذه الحصة.</div>`;
+  }
+  quiz.forEach((q,qi)=>{
+    html += `<div class="quiz-admin-q">
+      <label style="font-size:.8rem;font-weight:700;color:var(--navy);">السؤال ${qi+1}</label>
+      <input type="text" value="${esc(q.q||'')}" placeholder="نص السؤال" data-qedit="q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
+      ${[0,1,2,3].map(oi=>`
+        <div class="quiz-admin-opt-row">
+          <span style="font-size:.8rem;color:#7a8891;">${oi+1})</span>
+          <input type="text" value="${esc((q.o&&q.o[oi])||'')}" placeholder="اختيار ${oi+1}" data-qedit="o${oi}" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
+        </div>`).join("")}
+      <div class="field" style="margin-bottom:0;margin-top:6px;">
+        <label>الإجابة الصحيحة</label>
+        <select data-qedit="correct" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
+          ${[0,1,2,3].map(oi=>`<option value="${oi}" ${Number(q.correct)===oi?'selected':''}>اختيار ${oi+1}</option>`).join("")}
+        </select>
+      </div>
+      <button class="btn danger sm" style="margin-top:8px;" data-action="del-quiz-q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">حذف السؤال</button>
+    </div>`;
+  });
+  html += `<button class="btn outline sm" data-action="add-quiz-q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}">+ إضافة سؤال</button>`;
+  html += `</div>`;
+  return html;
+}
+
+function adminAccessHtml(){
+  return `
+  <h3>تفعيل اشتراك طالب</h3>
+  <div class="warn-box" style="margin-bottom:16px;">راجع رسالة واتساب الطالب (إيصال الدفع + الإيميل)، ثم أدخل إيميله هنا وحدد الحصص التي سيفتحها. الاشتراك الشهري = ${MONTH_LESSONS} حصص كحد أقصى، لا تفتح أكثر من ذلك.</div>
+  <div class="field"><label>إيميل الطالب</label><input type="email" id="grantEmail" placeholder="student@gmail.com"></div>
+  <button class="btn outline sm" data-action="load-grant-email" style="margin-bottom:16px;">تحميل بيانات الطالب</button>
+  <div id="grantArea"></div>
+  `;
+}
+
+function adminPassHtml(){
+  return `
+  <h3>كلمة مرور الإدارة</h3>
+  <p style="color:#5a6b76;font-size:.9rem">كلمة مرور لوحة التحكم ثابتة وموحدة على كل الأجهزة ولا يمكن تغييرها من هنا.</p>
+  `;
+}
+
+/* ---------------- modals ---------------- */
+let modal = null; // "auth" | "pay"
+let authTab = "login";
+function modalHtml(){
+  if(modal==="auth"){
+    return `<div class="overlay" data-action="close-modal-bg">
+      <div class="modal" onclick="event.stopPropagation()">
+        <button class="modal-close" data-action="close-modal">✕</button>
+        <div style="clear:both"></div>
+        <div class="tabs">
+          <button class="${authTab==='login'?'active':''}" data-action="auth-tab" data-tab="login">تسجيل الدخول</button>
+          <button class="${authTab==='register'?'active':''}" data-action="auth-tab" data-tab="register">حساب جديد</button>
+        </div>
+        <div class="field"><label>البريد الإلكتروني (Gmail)</label><input type="email" id="authEmail" placeholder="name@gmail.com"></div>
+        <div class="field"><label>كلمة المرور</label><input type="password" id="authPass"></div>
+        <button class="btn gold" style="width:100%" data-action="${authTab==='login'?'do-login':'do-register'}">${authTab==='login'?'دخول':'إنشاء الحساب'}</button>
+        <p style="font-size:.78rem;color:#8a97a1;margin-top:12px;">استخدم نفس الإيميل الذي سترسله عند الدفع، حتى يتم تفعيل اشتراكك عليه.</p>
+      </div>
+    </div>`;
+  }
+  if(modal==="pay"){
+    return `<div class="overlay" data-action="close-modal-bg">
+      <div class="modal wide" onclick="event.stopPropagation()">
+        <button class="modal-close" data-action="close-modal">✕</button>
+        <div style="clear:both"></div>
+        <h3>طريقة الاشتراك في المنصة</h3>
+        <p style="color:#5a6b76;font-size:.92rem;">الحصة الواحدة <b>${PRICE_LESSON} جنيه</b> — الاشتراك الشهري <b>${PRICE_MONTH} جنيه (${MONTH_LESSONS} حصص)</b>.</p>
+        <div class="pay-box"><div class="lbl">فودافون كاش</div><div class="val">${VODAFONE_CASH}</div></div>
+        <div class="pay-box"><div class="lbl">إنستاباي</div><div class="val" style="font-size:.8rem"><a href="${INSTAPAY_LINK}" target="_blank">${INSTAPAY_LINK}</a></div></div>
+        <div class="pay-box">
+          <div class="lbl">بعد التحويل</div>
+          <div style="font-size:.9rem;margin-top:6px;">أرسل صورة إيصال التحويل + إيميل حسابك على واتساب:</div>
+          <div class="val" style="margin-top:6px;">01107558827</div>
+          <a class="btn gold sm" style="margin-top:10px;display:inline-block" target="_blank" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('مرحباً، أرسل لكم إيصال الدفع لتفعيل الاشتراك. الإيميل: ')}">فتح واتساب مباشرة</a>
+        </div>
+        <p style="font-size:.78rem;color:#8a97a1;">بعد المراجعة يتم فتح الحصص المطلوبة على إيميلك خلال وقت قصير.</p>
+      </div>
+    </div>`;
+  }
+  return "";
+}
+
+/* ---------------- event binding ---------------- */
+function bindEvents(){
+  document.querySelectorAll("[data-nav]").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      route = JSON.parse(el.getAttribute("data-nav"));
+      if(route.name==="admin"){ adminUnlocked = adminUnlocked; }
+      render();
+    });
+  });
+  const act = (sel,fn)=>document.querySelectorAll(sel).forEach(el=>el.addEventListener("click",fn));
+
+  act('[data-action="open-auth"]', ()=>{ modal="auth"; authTab="login"; render(); });
+  act('[data-action="open-pay"]', ()=>{
+    if(!currentUser){ modal="auth"; authTab="login"; setToast({type:"err",text:"سجّل الدخول أولاً حتى يتم ربط الاشتراك بإيميلك."}); return; }
+    modal="pay"; render();
+  });
+  act('[data-action="close-modal"]', ()=>{ modal=null; render(); });
+  act('[data-action="close-modal-bg"]', (e)=>{ if(e.target.classList.contains("overlay")){ modal=null; render(); } });
+
+  act('[data-action="submit-quiz"]', function(){
+    const globalId = this.dataset.gid2;
+    const parts = globalId.split("__");
+    const g = findGrade(parts[0], parts[1]);
+    const l = g && g.lessons.find(x=>x.id===parts[2]);
+    if(!l) return;
+    const result = gradeQuiz(globalId, l.quiz||[]);
+    quizResults[globalId] = result;
+    render();
+    const good = (result.score/result.total) >= 0.6;
+    playResultSound(good);
+  });
+  act('[data-action="retake-quiz"]', function(){
+    const globalId = this.dataset.gid2;
+    delete quizResults[globalId];
+    render();
+  });
+  act('[data-action="auth-tab"]', function(){ authTab=this.getAttribute("data-tab"); render(); });
+  act('[data-action="logout"]', async ()=>{
+    await sb.auth.signOut();
+    currentUser=null; grants=[]; route={name:"home"}; render();
+  });
+
+  act('[data-action="do-login"]', async ()=>{
+    const email = document.getElementById("authEmail").value.trim().toLowerCase();
+    const pass = document.getElementById("authPass").value;
+    if(!email||!pass){ setToast({type:"err",text:"من فضلك أدخل الإيميل وكلمة المرور."}); return; }
+    const {data, error} = await sb.auth.signInWithPassword({email, password:pass});
+    if(error){ setToast({type:"err",text:supabaseErrorToArabic(error)}); return; }
+    currentUser = {id:data.user.id, email:data.user.email};
+    await ensureStudentRow(currentUser.id, currentUser.email);
+    grants = await getGrants(currentUser.id);
+    modal=null;
+    setToast({type:"ok",text:"تم تسجيل الدخول بنجاح."});
+  });
+
+  act('[data-action="do-register"]', async ()=>{
+    const email = document.getElementById("authEmail").value.trim().toLowerCase();
+    const pass = document.getElementById("authPass").value;
+    if(!email.includes("@")||pass.length<6){ setToast({type:"err",text:"أدخل إيميل صحيح وكلمة مرور 6 أحرف على الأقل."}); return; }
+    const {data, error} = await sb.auth.signUp({email, password:pass});
+    if(error){ setToast({type:"err",text:supabaseErrorToArabic(error)}); return; }
+    if(!data.session){
+      /* email confirmation required by the Supabase project settings */
+      modal=null;
+      setToast({type:"ok",text:"تم إنشاء الحساب، برجاء تفعيل الإيميل من الرسالة المرسلة إليك ثم تسجيل الدخول."});
+      return;
+    }
+    currentUser = {id:data.user.id, email:data.user.email};
+    await ensureStudentRow(currentUser.id, currentUser.email);
+    grants = [];
+    modal=null;
+    setToast({type:"ok",text:"تم إنشاء الحساب بنجاح."});
+  });
+
+  /* admin */
+  act('[data-action="set-admin-pass"]', async ()=>{
+    const p = document.getElementById("newAdminPass").value;
+    if(p.length<4){ setToast({type:"err",text:"كلمة مرور قصيرة جداً."}); return; }
+    await setAdminPass(await hashText(p));
+    adminHasPassword=true; adminUnlocked=true;
+    setToast({type:"ok",text:"تم تعيين كلمة مرور الإدارة."});
+  });
+  act('[data-action="admin-login"]', async ()=>{
+    const p = document.getElementById("adminPassInput").value;
+    if(p===ADMIN_FIXED_PASSWORD){ adminUnlocked=true; setToast({type:"ok",text:"مرحباً بك في لوحة التحكم."}); }
+    else setToast({type:"err",text:"كلمة مرور خاطئة."});
+  });
+  act('[data-action="admin-logout"]', ()=>{ adminUnlocked=false; render(); });
+  act('[data-action="admin-tab"]', function(){ adminTab=this.getAttribute("data-tab"); render(); });
+
+  act('[data-action="add-lesson"]', function(){
+    const sid=this.dataset.sid, gid=this.dataset.gid;
+    const g = findGrade(sid,gid);
+    const newId = "l"+(g.lessons.length+1)+"_"+Date.now().toString(36).slice(-4);
+    g.lessons.push({id:newId, title:"حصة جديدة", link:"", quiz:[]});
+    render();
+  });
+  act('[data-action="del-lesson"]', function(){
+    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid;
+    const g = findGrade(sid,gid);
+    g.lessons = g.lessons.filter(l=>l.id!==lid);
+    render();
+  });
+  document.querySelectorAll('[data-edit]').forEach(inp=>{
+    inp.addEventListener("input", function(){
+      const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, field=this.dataset.edit;
+      const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
+      l[field]=this.value;
+    });
+  });
+  act('[data-action="save-content"]', async ()=>{ await saveContent(); setToast({type:"ok",text:"تم حفظ كل التعديلات على المنصة."}); });
+
+  /* quiz admin editor */
+  act('[data-action="toggle-quiz-editor"]', function(){
+    const gid2 = this.dataset.gid2;
+    quizEditorOpen[gid2] = !quizEditorOpen[gid2];
+    render();
+  });
+  act('[data-action="add-quiz-q"]', function(){
+    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid;
+    const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
+    if(!l.quiz) l.quiz = [];
+    l.quiz.push({q:"", o:["","","",""], correct:0});
+    render();
+  });
+  act('[data-action="del-quiz-q"]', function(){
+    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx);
+    const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
+    l.quiz.splice(idx,1);
+    render();
+  });
+  document.querySelectorAll('[data-qedit]').forEach(inp=>{
+    inp.addEventListener("input", function(){
+      const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx), field=this.dataset.qedit;
+      const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
+      const q = l.quiz[idx];
+      if(field==="q") q.q = this.value;
+      else if(field==="correct") q.correct = Number(this.value);
+      else if(field[0]==="o") q.o[Number(field[1])] = this.value;
+    });
+    if(inp.tagName==="SELECT"){
+      inp.addEventListener("change", function(){
+        const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx);
+        const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
+        l.quiz[idx].correct = Number(this.value);
+      });
+    }
+  });
+
+  act('[data-action="load-grant-email"]', async ()=>{
+    const email = document.getElementById("grantEmail").value.trim().toLowerCase();
+    if(!email){ return; }
+    const area = document.getElementById("grantArea");
+    area.innerHTML = `<div class="msg ok">جاري البحث...</div>`;
+    const u = await getUser(email);
+    if(!u){ area.innerHTML = `<div class="msg err">لا يوجد حساب بهذا الإيميل بعد. اطلب من الطالب إنشاء حساب أولاً.</div>`; return; }
+    const currentGrants = await getGrants(u.id);
+    window.__grantDraft = new Set(currentGrants);
+    area.innerHTML = renderGrantEditor(u, currentGrants);
+    bindGrantEditor(u.id, u.email);
+  });
+
+  act('[data-action="admin-tab"]', function(){});
+}
+
+function renderGrantEditor(student, currentGrants){
+  const email = student.email;
+  let html = `<div class="msg ok">حساب موجود: ${esc(email)} — الحصص المفتوحة حالياً: ${currentGrants.length}</div>`;
+  html += `<div class="warn-box" style="margin:10px 0;">حدد الحصص المطلوب فتحها (بحد أقصى ${MONTH_LESSONS} حصة للاشتراك الشهري).</div>`;
+  ["math","acc"].forEach(sid=>{
+    const s = content[sid];
+    html += `<h4 style="color:var(--gold);margin-top:14px;">${s.icon} ${esc(s.name)}</h4>`;
+    s.grades.forEach(g=>{
+      if(g.lessons.length===0) return;
+      html += `<div style="margin-bottom:8px;"><b style="font-size:.85rem">${esc(g.name)}</b><div class="chk-grid">`;
+      g.lessons.forEach(l=>{
+        const gid = subjLessonId(sid,g.id,l.id);
+        const checked = currentGrants.includes(gid);
+        html += `<label class="chk-item"><input type="checkbox" data-grantid="${gid}" ${checked?'checked':''}> ${esc(l.title)}</label>`;
+      });
+      html += `</div></div>`;
+    });
+  });
+  html += `<div id="grantCountWarn" class="msg err" style="display:none;">لا يمكن اختيار أكثر من ${MONTH_LESSONS} حصص ضمن الاشتراك الشهري.</div>`;
+  html += `<button class="btn gold" data-action="save-grants" data-studentid="${esc(student.id)}">💾 حفظ الاشتراك لهذا الطالب</button>`;
+  return html;
+}
+
+function bindGrantEditor(studentId, email){
+  document.querySelectorAll('[data-grantid]').forEach(cb=>{
+    cb.addEventListener("change", function(){
+      const id = this.dataset.grantid;
+      if(this.checked) window.__grantDraft.add(id); else window.__grantDraft.delete(id);
+      const warn = document.getElementById("grantCountWarn");
+      warn.style.display = window.__grantDraft.size > MONTH_LESSONS ? "block" : "none";
+    });
+  });
+  document.querySelector('[data-action="save-grants"]').addEventListener("click", async ()=>{
+    const list = Array.from(window.__grantDraft);
+    try{
+      await setGrants(studentId, list);
+      setToast({type:"ok",text:"تم تحديث اشتراك الطالب "+email+" — عدد الحصص المفتوحة: "+list.length});
+    }catch(e){
+      setToast({type:"err",text:"تعذّر حفظ الاشتراك، تأكد من صلاحيات Supabase (RLS) على جدول subscriptions."});
+    }
+  });
+}
+
+/* ---------------- best-effort recording deterrents ---------------- */
+/* ملاحظة: لا توجد وسيلة برمجية داخل المتصفح تكتشف تسجيل الشاشة بشكل مضمون 100%،
+   خصوصاً لو حد صوّر الشاشة بموبايل تاني من بره. اللي تحت ده إجراءات رادعة قدر الإمكان فقط. */
+function toggleRecOverlay(show){
+  const ov = document.getElementById("recOverlay");
+  if(!ov) return;
+  ov.style.display = show ? "flex" : "none";
+}
+function pauseVideoFrame(){
+  const f = document.getElementById("playerFrame");
+  if(f && f.src && f.src.includes("youtube.com")){
+    try{ f.contentWindow.postMessage(JSON.stringify({event:"command",func:"pauseVideo",args:[]}), "*"); }catch(e){}
+  }
+}
+function flashRecOverlay(){
+  toggleRecOverlay(true);
+  setTimeout(()=>{ if(!document.hidden) toggleRecOverlay(false); }, 1500);
+}
+document.addEventListener("visibilitychange", ()=>{
+  if(document.hidden){ toggleRecOverlay(true); pauseVideoFrame(); }
+  else{ toggleRecOverlay(false); }
+});
+window.addEventListener("blur", ()=>{ toggleRecOverlay(true); pauseVideoFrame(); });
+window.addEventListener("focus", ()=>{ toggleRecOverlay(false); });
+window.addEventListener("keyup", (e)=>{ if(e.key==="PrintScreen"){ flashRecOverlay(); } });
+window.addEventListener("keydown", (e)=>{
+  if((e.metaKey||e.ctrlKey) && e.shiftKey && ["s","S","4","3"].includes(e.key)){ flashRecOverlay(); }
+});
+
+/* ---------------- init ---------------- */
+async function init(){
+  await loadContent();
+  adminHasPassword = true; // كلمة المرور ثابتة (1792006) ولا تحتاج تعيين لأول مرة
+
+  const {data:{session}} = await sb.auth.getSession();
+  if(session && session.user){
+    currentUser = {id:session.user.id, email:session.user.email};
+    await ensureStudentRow(currentUser.id, currentUser.email);
+    grants = await getGrants(currentUser.id);
+  }
+
+  sb.auth.onAuthStateChange((event, session)=>{
+    if(event==="SIGNED_OUT"){
+      currentUser = null; grants = [];
+      render();
+    }
+  });
+
+  render();
+}
+init();
+
+})();
+</script>
+</body>
+</html>
