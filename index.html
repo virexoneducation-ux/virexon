@@ -423,20 +423,42 @@ async function ensureStudentRow(id, email){
   const {error} = await sb.from("students").upsert({id, email}, {onConflict:"id"});
   if(error) console.error(error);
 }
-async function getGrants(studentId){
+async function getGrants(studentEmail){
   try{
-    const {data, error} = await sb.from("subscriptions").select("lesson_id").eq("student_id", studentId);
+    const {data, error} = await sb
+      .from("subscriptions")
+      .select("lesson_id")
+      .eq("student_email", studentEmail)
+      .eq("active", true);
     if(error) throw error;
     return (data||[]).map(r=>r.lesson_id);
-  }catch(e){ console.error(e); return []; }
+  }catch(e){ console.error("getGrants failed:", e); return []; }
 }
-async function setGrants(studentId, list){
-  const {error:delErr} = await sb.from("subscriptions").delete().eq("student_id", studentId);
-  if(delErr){ console.error(delErr); throw delErr; }
-  if(list.length>0){
-    const rows = list.map(lid=>({student_id:studentId, lesson_id:lid}));
-    const {error:insErr} = await sb.from("subscriptions").insert(rows);
-    if(insErr){ console.error(insErr); throw insErr; }
+/* setGrants: بدل الحذف الكامل وإعادة الإدخال (اللي بيمسح كل التاريخ ويعتمد على نجاح
+   خطوتين منفصلتين)، بنعتمد على عمود active كمصدر وحيد للحقيقة:
+   1) نطفي (active=false) كل اشتراكات الطالب.
+   2) نعمل upsert للحصص المطلوبة فقط بـ active=true (يتطلب unique constraint على
+      student_email+lesson_id — موجود في SQL المرفق تحت). */
+async function setGrants(studentEmail, lessonIds){
+  const desired = Array.from(new Set(lessonIds));
+  try{
+    const {error:offErr} = await sb
+      .from("subscriptions")
+      .update({active:false})
+      .eq("student_email", studentEmail);
+    if(offErr) throw offErr;
+
+    if(desired.length>0){
+      const rows = desired.map(lesson_id=>({student_email:studentEmail, lesson_id, active:true}));
+      const {error:upErr} = await sb
+        .from("subscriptions")
+        .upsert(rows, {onConflict:"student_email,lesson_id"});
+      if(upErr) throw upErr;
+    }
+    return {ok:true};
+  }catch(e){
+    console.error("setGrants failed:", e);
+    return {ok:false, error:e};
   }
 }
 function supabaseErrorToArabic(error){
@@ -906,7 +928,7 @@ function bindEvents(){
     if(error){ setToast({type:"err",text:supabaseErrorToArabic(error)}); return; }
     currentUser = {id:data.user.id, email:data.user.email};
     await ensureStudentRow(currentUser.id, currentUser.email);
-    grants = await getGrants(currentUser.id);
+    grants = await getGrants(currentUser.email);
     modal=null;
     setToast({type:"ok",text:"تم تسجيل الدخول بنجاح."});
   });
@@ -1012,10 +1034,10 @@ function bindEvents(){
     area.innerHTML = `<div class="msg ok">جاري البحث...</div>`;
     const u = await getUser(email);
     if(!u){ area.innerHTML = `<div class="msg err">لا يوجد حساب بهذا الإيميل بعد. اطلب من الطالب إنشاء حساب أولاً.</div>`; return; }
-    const currentGrants = await getGrants(u.id);
+    const currentGrants = await getGrants(u.email);
     window.__grantDraft = new Set(currentGrants);
     area.innerHTML = renderGrantEditor(u, currentGrants);
-    bindGrantEditor(u.id, u.email);
+    bindGrantEditor(u.email);
   });
 
   act('[data-action="admin-tab"]', function(){});
@@ -1040,11 +1062,11 @@ function renderGrantEditor(student, currentGrants){
     });
   });
   html += `<div id="grantCountWarn" class="msg err" style="display:none;">لا يمكن اختيار أكثر من ${MONTH_LESSONS} حصص ضمن الاشتراك الشهري.</div>`;
-  html += `<button class="btn gold" data-action="save-grants" data-studentid="${esc(student.id)}">💾 حفظ الاشتراك لهذا الطالب</button>`;
+  html += `<button class="btn gold" data-action="save-grants" data-studentemail="${esc(student.email)}">💾 حفظ الاشتراك لهذا الطالب</button>`;
   return html;
 }
 
-function bindGrantEditor(studentId, email){
+function bindGrantEditor(email){
   document.querySelectorAll('[data-grantid]').forEach(cb=>{
     cb.addEventListener("change", function(){
       const id = this.dataset.grantid;
@@ -1053,12 +1075,15 @@ function bindGrantEditor(studentId, email){
       warn.style.display = window.__grantDraft.size > MONTH_LESSONS ? "block" : "none";
     });
   });
-  document.querySelector('[data-action="save-grants"]').addEventListener("click", async ()=>{
+  document.querySelector('[data-action="save-grants"]').addEventListener("click", async function(){
+    const btn = this;
     const list = Array.from(window.__grantDraft);
-    try{
-      await setGrants(studentId, list);
+    btn.disabled = true; btn.textContent = "جاري الحفظ...";
+    const result = await setGrants(email, list);
+    btn.disabled = false; btn.textContent = "💾 حفظ الاشتراك لهذا الطالب";
+    if(result.ok){
       setToast({type:"ok",text:"تم تحديث اشتراك الطالب "+email+" — عدد الحصص المفتوحة: "+list.length});
-    }catch(e){
+    }else{
       setToast({type:"err",text:"تعذّر حفظ الاشتراك، تأكد من صلاحيات Supabase (RLS) على جدول subscriptions."});
     }
   });
@@ -1102,7 +1127,7 @@ async function init(){
   if(session && session.user){
     currentUser = {id:session.user.id, email:session.user.email};
     await ensureStudentRow(currentUser.id, currentUser.email);
-    grants = await getGrants(currentUser.id);
+    grants = await getGrants(currentUser.email);
   }
 
   sb.auth.onAuthStateChange((event, session)=>{
@@ -1115,6 +1140,25 @@ async function init(){
   render();
 }
 init();
+
+/* ------------------------------------------------------------
+   واجهة تصحيح فقط (Debug) — عشان تقدر تختبر الدوال من console
+   المتصفح مباشرة. الدوال الأصلية فضلت جوه الـ IIFE زي ما هي
+   (encapsulation سليم)؛ دي مجرد مرايا بتشاور عليها من الخارج.
+   مثال استخدام من الـ console:
+     await window.VirexonDebug.getGrants("student@example.com")
+     await window.VirexonDebug.setGrants("student@example.com", ["math__g4__l1"])
+     window.VirexonDebug.getCurrentUser()
+   ------------------------------------------------------------ */
+window.VirexonDebug = {
+  getGrants,
+  setGrants,
+  getUser,
+  ensureStudentRow,
+  getCurrentUser: ()=>currentUser,
+  getCurrentGrants: ()=>grants,
+  sb
+};
 
 })();
 </script>
