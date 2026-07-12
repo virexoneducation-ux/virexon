@@ -247,6 +247,8 @@ const sb = window.supabase.createClient(
     }
   }
 );
+console.log("[Supabase config] URL:", SUPABASE_URL);
+console.log("[Supabase config] anon/publishable key prefix:", SUPABASE_ANON_KEY.slice(0, 18) + "...");
 </script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.13/dist/hls.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.polyfilled.js"></script>
@@ -303,11 +305,27 @@ function buildContentFromRows(rows){
       grades: meta.grades.map(g=>({id:g.id, name:g.name, lessons:[]}))
     };
   });
+  let matched = 0, skipped = 0;
   (rows||[]).forEach(row=>{
     const s = out[row.subject];
-    if(!s) return;
+    if(!s){
+      skipped++;
+      console.warn(
+        `[buildContentFromRows] تم تجاهل الدرس id=${row.id} title="${row.title}" لأن subject="${row.subject}" غير موجود في SUBJECT_META. القيم الصحيحة:`,
+        Object.keys(SUBJECT_META)
+      );
+      return;
+    }
     const g = s.grades.find(x=>x.id===row.grade);
-    if(!g) return;
+    if(!g){
+      skipped++;
+      console.warn(
+        `[buildContentFromRows] تم تجاهل الدرس id=${row.id} title="${row.title}" لأن grade="${row.grade}" غير موجود ضمن صفوف subject="${row.subject}". القيم الصحيحة:`,
+        s.grades.map(x=>x.id)
+      );
+      return;
+    }
+    matched++;
     g.lessons.push({
       id: row.id,
       title: row.title || "",
@@ -317,6 +335,7 @@ function buildContentFromRows(rows){
       created_at: row.created_at
     });
   });
+  console.log(`[buildContentFromRows] إجمالي الصفوف من Supabase: ${(rows||[]).length} — تم عرضها: ${matched} — تم تجاهلها (subject/grade غير مطابق): ${skipped}`);
   return out;
 }
 
@@ -365,12 +384,39 @@ window.storage = {
 };
 
 /* ---------------- lessons table (Supabase) ---------------- */
+let lastFetchLessonsError = null; // آخر خطأ فعلي أثناء قراءة جدول lessons، لعرضه في الواجهة عند الحاجة
+
 async function fetchLessonsDB(){
-  const {data, error} = await sb
+  console.log("[fetchLessonsDB] جاري القراءة من جدول lessons ...");
+  const {data, error, status, statusText} = await sb
     .from("lessons")
     .select("id,created_at,title,description,video_url,exam_url,subject,grade")
     .order("created_at", {ascending:true});
-  if(error){ console.error("fetchLessonsDB failed:", error); return []; }
+
+  if(error){
+    lastFetchLessonsError = error;
+    console.error("[fetchLessonsDB] فشلت القراءة من جدول lessons.");
+    console.error("[fetchLessonsDB] status:", status, statusText);
+    console.error("[fetchLessonsDB] error.message:", error.message);
+    console.error("[fetchLessonsDB] error.code:", error.code);
+    console.error("[fetchLessonsDB] error.details:", error.details);
+    console.error("[fetchLessonsDB] error.hint:", error.hint);
+    // الخطأ الأكثر شيوعًا لهذه الحالة هو عدم وجود سياسة RLS تسمح بالقراءة (SELECT) لدور anon
+    if(error.code === "42501" || /permission/i.test(error.message||"") || /row-level security/i.test(error.message||"")){
+      console.error(
+        "[fetchLessonsDB] هذا يبدو RLS يمنع القراءة. فعّل سياسة SELECT لدور anon على جدول lessons في Supabase، مثال:\n" +
+        "  create policy \"lessons are readable by everyone\"\n" +
+        "  on public.lessons for select\n" +
+        "  to anon\n" +
+        "  using (true);"
+      );
+    }
+    return [];
+  }
+
+  lastFetchLessonsError = null;
+  console.log(`[fetchLessonsDB] نجحت القراءة. عدد الصفوف المُستلمة: ${(data||[]).length}`);
+  if(data && data.length){ console.log("[fetchLessonsDB] أول صف كمثال:", data[0]); }
   return data || [];
 }
 async function insertLessonDB(row){
@@ -392,6 +438,15 @@ async function deleteLessonDB(id){
 async function loadContent(){
   const rows = await fetchLessonsDB();
   content = buildContentFromRows(rows);
+  if(lastFetchLessonsError){
+    // خطأ فعلي في القراءة (غالبًا RLS أو مفتاح/URL خاطئ) — نعرضه للمستخدم مباشرة وليس فقط في الـ console
+    setToast({
+      type: "err",
+      text: "تعذّر تحميل الدروس من قاعدة البيانات: " + (lastFetchLessonsError.message || "خطأ غير معروف") + " — افتح Console لمزيد من التفاصيل."
+    });
+  } else {
+    console.log("[loadContent] تم بناء content بنجاح.", content);
+  }
 }
 async function reloadContent(){
   await loadContent();
@@ -958,6 +1013,13 @@ let busyLessonId = null;  // lesson id currently being saved/deleted (disables i
 function adminContentHtml(){
   let html = `<h3>إدارة المواد والحصص</h3>
   <div class="warn-box" style="margin-bottom:16px;">الدروس هنا متصلة مباشرة بجدول <b>lessons</b> في Supabase — أي إضافة أو تعديل أو حذف يُحفظ فوراً ويظهر لكل الطلاب.</div>`;
+  if(lastFetchLessonsError){
+    html += `<div class="warn-box" style="margin-bottom:16px;background:#fdeaea;border-color:#e57373;color:#8a2020;">
+      ⚠️ فشلت آخر محاولة لتحميل الدروس من Supabase: <b>${esc(lastFetchLessonsError.message||"خطأ غير معروف")}</b>
+      ${lastFetchLessonsError.code?` (code: ${esc(lastFetchLessonsError.code)})`:""}
+      — على الأغلب سياسة RLS لا تسمح بالقراءة (SELECT) لدور anon. افتح Console لتفاصيل أكثر.
+    </div>`;
+  }
   Object.keys(SUBJECT_META).forEach(sid=>{
     const s = content[sid];
     html += `<div style="margin-bottom:26px;">
