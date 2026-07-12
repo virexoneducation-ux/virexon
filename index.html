@@ -1396,7 +1396,53 @@ window.VirexonDebug = {
   ensureStudentRow,
   getCurrentUser: ()=>currentUser,
   getCurrentGrants: ()=>grants,
+  reloadAndRender: async ()=>{ await reloadContent(); render(); },
   sb
+};
+
+/* ------------------------------------------------------------
+   دالة saveLesson عامة (Global) — يمكن نداؤها مباشرة من الـ
+   console أو من أي كود خارج الـ IIFE، وتستخدم نفس عميل Supabase
+   ونفس منطق إدراج الصف المستخدم في زر "💾 إضافة الحصة" بالضبط،
+   حتى لا يتكرر منطق الحفظ في مكانين مختلفين.
+
+   الاستخدام من الـ console:
+     await window.saveLesson({
+       title: "عنوان الحصة",
+       description: "وصف مختصر",
+       video_url: "https://...",
+       exam_url: "https://...",
+       subject: "math",   // لازم يطابق مفتاح موجود في SUBJECT_META
+       grade: "g4"        // لازم يطابق id صف موجود داخل هذه المادة
+     });
+------------------------------------------------------------- */
+window.saveLesson = async function saveLesson(lessonData){
+  lessonData = lessonData || {};
+  const row = {
+    title: (lessonData.title || "").trim(),
+    description: (lessonData.description || "").trim(),
+    video_url: (lessonData.video_url || "").trim(),
+    exam_url: (lessonData.exam_url || "").trim(),
+    subject: lessonData.subject,
+    grade: lessonData.grade
+  };
+  if(!row.title){ throw new Error("عنوان الحصة (title) مطلوب."); }
+  if(!row.subject || !row.grade){ throw new Error("subject و grade مطلوبان."); }
+
+  const { data, error } = await sb
+    .from('lessons')
+    .insert([row])
+    .select();
+
+  if(error){
+    console.error("saveLesson failed:", error);
+    throw error;
+  }
+  console.log("saveLesson succeeded:", data);
+
+  // حدّث المحتوى المعروض في الواجهة فوراً بنفس بيانات الجدول
+  await window.VirexonDebug.reloadAndRender();
+  return data;
 };
 
 })();
