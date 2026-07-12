@@ -815,7 +815,10 @@ function capturePlayerStateIfLesson(){
 function initLessonPlayerRoute(preState){
   const sid=route.sid, gid=route.gid, lid=route.lid;
   const s = content[sid]; const g = s && findGrade(sid,gid);
-  const l = g && g.lessons.find(x=>x.id===lid);
+  console.log("[initLessonPlayerRoute] lessonId (route.lid):", lid, typeof lid);
+  console.log("[initLessonPlayerRoute] lessons in this grade:", g && g.lessons.map(x=>({id:x.id, type:typeof x.id, title:x.title})));
+  const l = g && g.lessons.find(x=>String(x.id)===String(lid));
+  console.log("[initLessonPlayerRoute] matched lesson:", l);
   if(!l) return;
   const globalId = subjLessonId(sid,gid,lid);
   const unlocked = currentUser && grants.includes(globalId);
@@ -828,7 +831,7 @@ function initLessonPlayerRoute(preState){
 function retryVideo(){
   if(route.name!=="lesson") return;
   const g = findGrade(route.sid,route.gid);
-  const l = g && g.lessons.find(x=>x.id===route.lid);
+  const l = g && g.lessons.find(x=>String(x.id)===String(route.lid));
   if(!l || !l.video_url) return;
   destroyPlayer();
   buildPlayer(l.video_url, subjLessonId(route.sid,route.gid,route.lid), null);
@@ -973,8 +976,14 @@ function subjLessonId(sid,gid,lid){ return sid+"__"+gid+"__"+lid; }
 
 function lessonHtml(sid,gid,lid){
   const s = content[sid]; const g = s && findGrade(sid,gid);
-  const l = g && g.lessons.find(x=>x.id===lid);
-  if(!l) return `<div class="empty">الحصة غير موجودة</div>`;
+  console.log("[lessonHtml] lessonId being searched (lid):", lid, "| typeof:", typeof lid);
+  console.log("[lessonHtml] available lesson ids in this grade:", g && g.lessons.map(x=>({id:x.id, type:typeof x.id, title:x.title})));
+  const l = g && g.lessons.find(x=>String(x.id)===String(lid));
+  console.log("[lessonHtml] query result (matched lesson):", l || null, "| error: لا يوجد استعلام Supabase هنا (المقارنة تتم محليًا على content المُحمَّل مسبقًا)");
+  if(!l){
+    console.error(`[lessonHtml] الحصة غير موجودة. lid المطلوب="${lid}" — تأكد أن هذا الـ id موجود فعليًا ضمن content[${sid}].grades[${gid}].lessons، وأن subject/grade في صف قاعدة البيانات يطابقان "${sid}"/"${gid}" بالضبط.`);
+    return `<div class="empty">الحصة غير موجودة</div>`;
+  }
   const globalId = subjLessonId(sid,gid,lid);
   const unlocked = currentUser && grants.includes(globalId);
   return `
