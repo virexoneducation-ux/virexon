@@ -217,24 +217,16 @@
   .chk-item{display:flex;align-items:center;gap:8px;background:var(--paper-2);padding:8px 12px;border-radius:8px;font-size:.85rem;}
   .warn-box{background:#fdf3e3;border:1px solid var(--gold-light);color:#7a5b1a;padding:10px 14px;border-radius:10px;font-size:.85rem;}
 
-  /* ===== quiz (student) ===== */
-  .quiz-box{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:20px;border-top:5px solid var(--navy-2);}
-  .quiz-q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--line);}
-  .quiz-q:last-of-type{border-bottom:none;}
-  .quiz-q-title{font-weight:700;color:var(--navy);margin-bottom:10px;font-family:'Cairo',sans-serif;}
-  .quiz-opts{display:flex;flex-direction:column;gap:8px;}
-  .quiz-opt{display:flex;align-items:center;gap:10px;background:var(--paper-2);padding:10px 14px;border-radius:10px;font-size:.92rem;cursor:pointer;}
-  .quiz-opt:hover{background:var(--paper);}
-  .quiz-result{padding:18px;border-radius:12px;font-weight:700;font-family:'Cairo',sans-serif;text-align:center;margin-bottom:14px;font-size:1.05rem;}
-  .quiz-result.good{background:#e2efe7;color:var(--ok);}
-  .quiz-result.bad{background:#fbe6e6;color:var(--danger);}
-  .quiz-score{margin-top:8px;font-size:1.3rem;}
+  /* ===== exam link (student) ===== */
+  .exam-box{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:20px;border-top:5px solid var(--navy-2);text-align:center;}
+  .lesson-desc{color:#5a6b76;font-size:.95rem;margin:-10px 0 20px;}
 
-  /* ===== admin quiz editor ===== */
-  .quiz-admin{background:var(--paper);border-radius:10px;padding:14px;margin-top:10px;}
-  .quiz-admin-q{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;}
-  .quiz-admin-q input[type="text"]{padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;width:100%;margin-bottom:6px;}
-  .quiz-admin-opt-row{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;margin-bottom:6px;}
+  /* ===== admin lesson form ===== */
+  .lesson-card{background:var(--paper);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+  .lesson-card .lf-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+  @media(max-width:640px){.lesson-card .lf-grid{grid-template-columns:1fr;}}
+  .lesson-card textarea{width:100%;padding:9px 12px;border-radius:8px;border:1.5px solid var(--line);font-family:inherit;resize:vertical;min-height:60px;}
+  .lesson-card .lf-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -270,122 +262,63 @@ const WHATSAPP_NUMBER = "201107558827";
 const VODAFONE_CASH = "+20 10 19311539";
 const INSTAPAY_LINK = "https://ipn.eg/S/dinafaisal1010/instapay/8IY2Bm";
 
-function mkLessons(titles){
-  return titles.map((t,i)=>({id:"l"+(i+1), title:t, link:"", quiz:[]}));
-}
-
-const DEFAULT_CONTENT = {
+/* ---------------- subject/grade structure (metadata only — NOT lesson data) ----------------
+   هذا الكائن يحدد فقط شكل المواد والصفوف الدراسية (الاسم/الأيقونة/المدرّس) وهو ثابت في الكود
+   لأنه هيكل المنصة، وليس محتوى دروس. الدروس نفسها تُجلب بالكامل من جدول lessons في Supabase. */
+const SUBJECT_META = {
   math: {
     id:"math", name:"الرياضيات", teacher:"مستر مصطفى عمران", icon:"📐",
     desc:"شرح مبسط ومنظم لمادة الرياضيات من الابتدائي حتى الثانوي.",
     grades: [
-      {id:"g4", name:"الصف الرابع الابتدائي", lessons: mkLessons([
-        "الأعداد حتى الملايين والقيمة المكانية",
-        "جمع وطرح الأعداد الكبيرة",
-        "ضرب عدد في عددين",
-        "القسمة على رقم واحد",
-        "الكسور الاعتيادية ومقارنتها",
-        "القياس: الطول والكتلة والزمن",
-        "الزوايا وأنواعها",
-        "الأشكال الهندسية المستوية"
-      ])},
-      {id:"g5", name:"الصف الخامس الابتدائي", lessons: mkLessons([
-        "الأعداد الصحيحة والعمليات عليها",
-        "الكسور الاعتيادية والعشرية",
-        "النسبة والتناسب",
-        "الزوايا وأنواعها",
-        "المحيط والمساحة",
-        "الأشكال الرباعية"
-      ])},
-      {id:"g6", name:"الصف السادس الابتدائي", lessons: mkLessons([
-        "الأعداد النسبية",
-        "الأسس والجذور",
-        "المعادلات البسيطة",
-        "الدائرة وأجزاؤها",
-        "الحجم ووحدات القياس",
-        "الإحصاء والاحتمالات"
-      ])},
-      {id:"prep1", name:"الصف الأول الإعدادي", lessons: mkLessons([
-        "مجموعات الأعداد",
-        "الأعداد الصحيحة والنسبية",
-        "المعادلات من الدرجة الأولى",
-        "النسبة والتناسب والتشابه",
-        "الإحصاء وتمثيل البيانات",
-        "الهندسة المستوية"
-      ])},
-      {id:"prep2", name:"الصف الثاني الإعدادي", lessons: mkLessons([
-        "القوى والجذور",
-        "حساب المثلثات",
-        "تحليل المقادير الجبرية",
-        "المعادلات والمتباينات",
-        "المستقيمات المتوازية",
-        "تشابه المثلثات"
-      ])},
-      {id:"prep3", name:"الصف الثالث الإعدادي", lessons: mkLessons([
-        "العمليات على الأعداد الحقيقية",
-        "حل المعادلات التربيعية",
-        "الإحصاء والمقاييس",
-        "الزوايا المركزية والمحيطية",
-        "حساب المثلثات",
-        "الهندسة الفراغية"
-      ])},
-      {id:"sec1", name:"الصف الأول الثانوي", lessons: mkLessons([
-        "المنطق الرياضي",
-        "نظرية المجموعات",
-        "كثيرات الحدود",
-        "حساب المثلثات",
-        "الهندسة الفراغية",
-        "الإحصاء"
-      ])},
-      {id:"sec2", name:"الصف الثاني الثانوي", lessons: mkLessons([
-        "النهايات والاتصال",
-        "المشتقات وتطبيقاتها",
-        "حساب المثلثات المتقدم",
-        "الهندسة التحليلية: الخط المستقيم",
-        "الدوال وأنواعها",
-        "الاستدلال الرياضي"
-      ])}
+      {id:"g4", name:"الصف الرابع الابتدائي"},
+      {id:"g5", name:"الصف الخامس الابتدائي"},
+      {id:"g6", name:"الصف السادس الابتدائي"},
+      {id:"prep1", name:"الصف الأول الإعدادي"},
+      {id:"prep2", name:"الصف الثاني الإعدادي"},
+      {id:"prep3", name:"الصف الثالث الإعدادي"},
+      {id:"sec1", name:"الصف الأول الثانوي"},
+      {id:"sec2", name:"الصف الثاني الثانوي"}
     ]
   },
   acc: {
     id:"acc", name:"المحاسبة", teacher:"مستر هشام سمير", icon:"📊",
     desc:"أساسيات ومهارات المحاسبة لطلاب الثانوي العام والتجارة.",
     grades: [
-      {id:"sec2acc", name:"الصف الثاني الثانوي", lessons: mkLessons([
-        "مقدمة في مبادئ المحاسبة",
-        "القيد المزدوج ودفتر اليومية",
-        "دفتر الأستاذ وميزان المراجعة",
-        "التسويات الجردية",
-        "حسابات الأستاذ الختامية",
-        "الميزانية العمومية"
-      ])},
-      {id:"tj1", name:"الصف الأول تجارة", lessons: mkLessons([
-        "مدخل إلى علم المحاسبة",
-        "المعادلة المحاسبية",
-        "دورة القيد المحاسبي",
-        "دفتر اليومية العامة",
-        "ميزان المراجعة",
-        "الأصول والخصوم"
-      ])},
-      {id:"tj2", name:"الصف الثاني تجارة", lessons: mkLessons([
-        "محاسبة المخزون السلعي",
-        "الأصول الثابتة والإهلاك",
-        "المخصصات والاحتياطيات",
-        "أوراق القبض والدفع",
-        "تسوية حساب البنك",
-        "الحسابات الختامية والميزانية"
-      ])},
-      {id:"tj3", name:"الصف الثالث تجارة", lessons: mkLessons([
-        "محاسبة شركات الأشخاص",
-        "محاسبة شركات الأموال",
-        "القوائم المالية الختامية",
-        "التحليل المالي للقوائم",
-        "مبادئ محاسبة التكاليف",
-        "مراجعة شاملة قبل الثانوية العامة"
-      ])}
+      {id:"sec2acc", name:"الصف الثاني الثانوي"},
+      {id:"tj1", name:"الصف الأول تجارة"},
+      {id:"tj2", name:"الصف الثاني تجارة"},
+      {id:"tj3", name:"الصف الثالث تجارة"}
     ]
   }
 };
+
+/* يبني كائن "content" (المستخدم في كل الواجهة) من صفوف جدول lessons القادمة من Supabase،
+   بتجميعها داخل هيكل SUBJECT_META حسب عمودي subject و grade. */
+function buildContentFromRows(rows){
+  const out = {};
+  Object.keys(SUBJECT_META).forEach(sid=>{
+    const meta = SUBJECT_META[sid];
+    out[sid] = {
+      id: meta.id, name: meta.name, teacher: meta.teacher, icon: meta.icon, desc: meta.desc,
+      grades: meta.grades.map(g=>({id:g.id, name:g.name, lessons:[]}))
+    };
+  });
+  (rows||[]).forEach(row=>{
+    const s = out[row.subject];
+    if(!s) return;
+    const g = s.grades.find(x=>x.id===row.grade);
+    if(!g) return;
+    g.lessons.push({
+      id: row.id,
+      title: row.title || "",
+      description: row.description || "",
+      video_url: row.video_url || "",
+      exam_url: row.exam_url || "",
+      created_at: row.created_at
+    });
+  });
+  return out;
+}
 
 /* ---------------- state ---------------- */
 let content = null;         // shared site content
@@ -396,8 +329,6 @@ let adminUnlocked = false;
 let adminHasPassword = false;
 const ADMIN_FIXED_PASSWORD = "1792006"; // كلمة مرور ثابتة وموحدة للوحة التحكم من أي جهاز
 let toast = null;
-let quizResults = {};      // globalLessonId -> {score, total}
-let quizEditorOpen = {};   // globalLessonId -> bool (admin quiz editor visibility)
 
 /* ---------------- crypto helpers ---------------- */
 async function hashText(text){
@@ -433,18 +364,37 @@ window.storage = {
   }
 };
 
-/* ---------------- storage helpers ---------------- */
-async function loadContent(){
-  try{
-    const r = await window.storage.get("site:content", true);
-    content = JSON.parse(r.value);
-  }catch(e){
-    content = DEFAULT_CONTENT;
-    await window.storage.set("site:content", JSON.stringify(content), true);
-  }
+/* ---------------- lessons table (Supabase) ---------------- */
+async function fetchLessonsDB(){
+  const {data, error} = await sb
+    .from("lessons")
+    .select("id,created_at,title,description,video_url,exam_url,subject,grade")
+    .order("created_at", {ascending:true});
+  if(error){ console.error("fetchLessonsDB failed:", error); return []; }
+  return data || [];
 }
-async function saveContent(){
-  await window.storage.set("site:content", JSON.stringify(content), true);
+async function insertLessonDB(row){
+  const {data, error} = await sb.from("lessons").insert(row).select().single();
+  if(error) throw error;
+  return data;
+}
+async function updateLessonDB(id, patch){
+  const {data, error} = await sb.from("lessons").update(patch).eq("id", id).select().single();
+  if(error) throw error;
+  return data;
+}
+async function deleteLessonDB(id){
+  const {error} = await sb.from("lessons").delete().eq("id", id);
+  if(error) throw error;
+}
+
+/* ---------------- content helpers (built from Supabase lessons) ---------------- */
+async function loadContent(){
+  const rows = await fetchLessonsDB();
+  content = buildContentFromRows(rows);
+}
+async function reloadContent(){
+  await loadContent();
 }
 async function getUser(email){
   try{
@@ -770,19 +720,19 @@ function initLessonPlayerRoute(preState){
   if(!l) return;
   const globalId = subjLessonId(sid,gid,lid);
   const unlocked = currentUser && grants.includes(globalId);
-  if(!unlocked || !l.link){ destroyPlayer(); return; }
+  if(!unlocked || !l.video_url){ destroyPlayer(); return; }
   const sameLesson = preState && preState.key===globalId;
   destroyPlayer();
-  buildPlayer(l.link, globalId, sameLesson ? preState : null);
+  buildPlayer(l.video_url, globalId, sameLesson ? preState : null);
 }
 
 function retryVideo(){
   if(route.name!=="lesson") return;
   const g = findGrade(route.sid,route.gid);
   const l = g && g.lessons.find(x=>x.id===route.lid);
-  if(!l || !l.link) return;
+  if(!l || !l.video_url) return;
   destroyPlayer();
-  buildPlayer(l.link, subjLessonId(route.sid,route.gid,route.lid), null);
+  buildPlayer(l.video_url, subjLessonId(route.sid,route.gid,route.lid), null);
 }
 
 /* ---------------- render root ---------------- */
@@ -938,9 +888,10 @@ function lessonHtml(sid,gid,lid){
     </div>
   </div>
   <h1 style="color:var(--navy)">${esc(l.title)}</h1>
+  ${l.description? `<p class="lesson-desc">${esc(l.description)}</p>` : ""}
   ${unlocked? `
     <div class="player-wrap" id="lessonPlayerWrap" oncontextmenu="return false">
-      ${l.link? `<div id="videoPlayerBox" class="video-player-box"></div>
+      ${l.video_url? `<div id="videoPlayerBox" class="video-player-box"></div>
                  <div id="videoErrorBox" class="video-error-box">
                    <div class="voe-icon">⚠️</div>
                    <div class="voe-text">تعذّر تحميل الفيديو. تأكد من اتصالك بالإنترنت وحاول مرة أخرى.</div>
@@ -951,7 +902,7 @@ function lessonHtml(sid,gid,lid){
       <div id="recOverlay" class="rec-overlay">🔒 تم إخفاء الفيديو تلقائياً<br>ارجع إلى صفحة الحصة داخل المتصفح لمتابعة المشاهدة</div>
     </div>
     <div class="no-record-note">⚠️ هذا الفيديو مخصص لحسابك (${esc(currentUser.email)}) فقط، ويمنع تصويره أو إعادة نشره. النقر بزر الفأرة الأيمن والتحديد معطّلان داخل المشغّل، ويتم إخفاء الفيديو تلقائياً (بعد مهلة قصيرة) إذا غادرت تبويب المتصفح فعلياً — ولا يحدث ذلك عند تدوير الهاتف أو الدخول لوضع ملء الشاشة.</div>
-    ${quizSectionHtml(sid,gid,lid,globalId,l)}
+    ${examSectionHtml(l)}
   ` : `
     <div class="empty" style="text-align:right;padding:36px;">
       <h3 style="color:var(--navy)">هذه الحصة مقفلة 🔒</h3>
@@ -961,66 +912,14 @@ function lessonHtml(sid,gid,lid){
   `}`;
 }
 
-/* ---------------- quiz (student side) ---------------- */
-function quizSectionHtml(sid,gid,lid,globalId,l){
-  const quiz = l.quiz || [];
-  if(quiz.length===0) return "";
-  const result = quizResults[globalId];
-  let html = `<div class="quiz-box"><h3 style="color:var(--navy)">📝 اختبار الحصة</h3>`;
-  if(result){
-    const pct = Math.round((result.score/result.total)*100);
-    const good = pct>=60;
-    html += `<div class="quiz-result ${good?'good':'bad'}">
-      ${good? "🎉 أحسنت! أداء جيد." : "😕 للأسف، النتيجة ضعيفة، حاول مرة أخرى."}
-      <div class="quiz-score">${result.score} / ${result.total} (${pct}%)</div>
-    </div>
-    <button class="btn outline sm" data-action="retake-quiz" data-gid2="${esc(globalId)}">إعادة الاختبار</button>`;
-  } else {
-    html += quiz.map((q,qi)=>`
-      <div class="quiz-q">
-        <div class="quiz-q-title">${qi+1}. ${esc(q.q)}</div>
-        <div class="quiz-opts">
-          ${(q.o||[]).map((opt,oi)=>`
-            <label class="quiz-opt">
-              <input type="radio" name="quizq_${esc(globalId)}_${qi}" value="${oi}">
-              ${esc(opt)}
-            </label>`).join("")}
-        </div>
-      </div>`).join("");
-    html += `<button class="btn gold" data-action="submit-quiz" data-gid2="${esc(globalId)}">تسليم الإجابة</button>`;
-  }
-  html += `</div>`;
-  return html;
-}
-
-function gradeQuiz(globalId, quiz){
-  let score = 0;
-  quiz.forEach((q,qi)=>{
-    const checked = document.querySelector(`input[name="quizq_${CSS.escape(globalId)}_${qi}"]:checked`);
-    if(checked && Number(checked.value)===Number(q.correct)) score++;
-  });
-  return {score, total: quiz.length};
-}
-
-/* interactive sound feedback (Web Audio, no external files) */
-function playResultSound(good){
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const notes = good? [523.25,659.25,783.99,1046.5] : [400,320,240];
-    let t = ctx.currentTime;
-    notes.forEach((freq,i)=>{
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = good? "triangle":"sawtooth";
-      osc.frequency.setValueAtTime(freq, t);
-      gain.gain.setValueAtTime(0.001, t);
-      gain.gain.linearRampToValueAtTime(0.18, t+0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, t+0.28);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(t); osc.stop(t+0.3);
-      t += good? 0.16 : 0.22;
-    });
-  }catch(e){}
+/* ---------------- exam link (student side) ---------------- */
+function examSectionHtml(l){
+  if(!l.exam_url) return "";
+  return `<div class="exam-box">
+    <h3 style="color:var(--navy)">📝 امتحان الحصة</h3>
+    <p style="color:#5a6b76;margin-bottom:14px;">اضغط الزر أدناه لفتح امتحان الحصة.</p>
+    <a class="btn gold" href="${esc(l.exam_url)}" target="_blank" rel="noopener noreferrer">الذهاب إلى الامتحان ↗</a>
+  </div>`;
 }
 
 /* ---------------- admin ---------------- */
@@ -1053,64 +952,78 @@ function adminHtml(){
   </div>`;
 }
 
+let newLessonForm = null; // {sid,gid} while the "add lesson" form is open, else null
+let busyLessonId = null;  // lesson id currently being saved/deleted (disables its buttons)
+
 function adminContentHtml(){
-  return `
-  <h3>إدارة المواد والحصص</h3>
-  ${["math","acc"].map(sid=>{
+  let html = `<h3>إدارة المواد والحصص</h3>
+  <div class="warn-box" style="margin-bottom:16px;">الدروس هنا متصلة مباشرة بجدول <b>lessons</b> في Supabase — أي إضافة أو تعديل أو حذف يُحفظ فوراً ويظهر لكل الطلاب.</div>`;
+  Object.keys(SUBJECT_META).forEach(sid=>{
     const s = content[sid];
-    return `<div style="margin-bottom:26px;">
+    html += `<div style="margin-bottom:26px;">
       <h4 style="color:var(--gold)">${s.icon} ${esc(s.name)} — ${esc(s.teacher)}</h4>
       ${s.grades.map(g=>`
         <div style="background:var(--paper);border-radius:10px;padding:14px 16px;margin-bottom:10px;">
-          <div style="font-weight:700;margin-bottom:8px;">${esc(g.name)}</div>
-          ${g.lessons.map((l,i)=>{
-            const globalId = subjLessonId(sid,g.id,l.id);
-            const qCount = (l.quiz||[]).length;
-            return `<div class="lesson-edit-row">
-              <div class="lesson-num">${i+1}</div>
-              <input type="text" value="${esc(l.title)}" data-edit="title" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}" placeholder="عنوان الحصة">
-              <input type="text" value="${esc(l.link||'')}" data-edit="link" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}" placeholder="رابط يوتيوب / mp4 / m3u8 (HLS) / أو JSON بجودات متعددة">
-              <button class="btn outline sm" data-action="toggle-quiz-editor" data-gid2="${esc(globalId)}">📝 اختبار الحصة (${qCount})</button>
-              <button class="btn danger sm" data-action="del-lesson" data-sid="${sid}" data-gid="${g.id}" data-lid="${l.id}">حذف</button>
-            </div>
-            ${quizEditorOpen[globalId] ? quizAdminEditorHtml(sid,g.id,l.id,l) : ""}`;
-          }).join("")}
-          <button class="btn outline sm" data-action="add-lesson" data-sid="${sid}" data-gid="${g.id}">+ إضافة حصة</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+            <div style="font-weight:700;">${esc(g.name)}</div>
+            <button class="btn outline sm" data-action="new-lesson-form" data-sid="${sid}" data-gid="${g.id}">+ إضافة حصة</button>
+          </div>
+          ${(newLessonForm && newLessonForm.sid===sid && newLessonForm.gid===g.id) ? lessonFormHtml(sid,g.id) : ""}
+          ${g.lessons.length===0? `<div style="color:#8a97a1;font-size:.85rem;">لا توجد حصص بعد لهذا الصف.</div>` : g.lessons.map((l,i)=>lessonCardHtml(l,i)).join("")}
         </div>`).join("")}
-    </div>`;
-  }).join("")}
-  <button class="btn gold" data-action="save-content">💾 حفظ كل التعديلات</button>
-  `;
-}
-
-function quizAdminEditorHtml(sid,gid,lid,l){
-  const quiz = l.quiz || [];
-  let html = `<div class="quiz-admin">`;
-  html += `<div class="warn-box" style="margin-bottom:12px;">أضف سؤال، ثم اكتب 4 اختيارات، وحدد الإجابة الصحيحة من القائمة. لا تنسَ الضغط على "حفظ كل التعديلات" أسفل الصفحة بعد الانتهاء.</div>`;
-  if(quiz.length===0){
-    html += `<div style="color:#7a8891;font-size:.85rem;margin-bottom:10px;">لا توجد أسئلة بعد لهذه الحصة.</div>`;
-  }
-  quiz.forEach((q,qi)=>{
-    html += `<div class="quiz-admin-q">
-      <label style="font-size:.8rem;font-weight:700;color:var(--navy);">السؤال ${qi+1}</label>
-      <input type="text" value="${esc(q.q||'')}" placeholder="نص السؤال" data-qedit="q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
-      ${[0,1,2,3].map(oi=>`
-        <div class="quiz-admin-opt-row">
-          <span style="font-size:.8rem;color:#7a8891;">${oi+1})</span>
-          <input type="text" value="${esc((q.o&&q.o[oi])||'')}" placeholder="اختيار ${oi+1}" data-qedit="o${oi}" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
-        </div>`).join("")}
-      <div class="field" style="margin-bottom:0;margin-top:6px;">
-        <label>الإجابة الصحيحة</label>
-        <select data-qedit="correct" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">
-          ${[0,1,2,3].map(oi=>`<option value="${oi}" ${Number(q.correct)===oi?'selected':''}>اختيار ${oi+1}</option>`).join("")}
-        </select>
-      </div>
-      <button class="btn danger sm" style="margin-top:8px;" data-action="del-quiz-q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}" data-idx="${qi}">حذف السؤال</button>
     </div>`;
   });
-  html += `<button class="btn outline sm" data-action="add-quiz-q" data-sid="${sid}" data-gid="${gid}" data-lid="${lid}">+ إضافة سؤال</button>`;
-  html += `</div>`;
   return html;
+}
+
+function lessonCardHtml(l,i){
+  const busy = busyLessonId===l.id;
+  return `<div class="lesson-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div class="lesson-num">${i+1}</div>
+      <div style="font-weight:700;color:var(--navy)">${esc(l.title)||"(بدون عنوان)"}</div>
+    </div>
+    <div class="lf-grid">
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">عنوان الحصة</label>
+        <input type="text" value="${esc(l.title)}" data-field="title" data-lid="${l.id}" placeholder="عنوان الحصة"></div>
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">رابط الفيديو</label>
+        <input type="text" value="${esc(l.video_url)}" data-field="video_url" data-lid="${l.id}" placeholder="رابط يوتيوب / mp4 / m3u8 (HLS)"></div>
+    </div>
+    <div class="lf-grid">
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">رابط الامتحان</label>
+        <input type="text" value="${esc(l.exam_url)}" data-field="exam_url" data-lid="${l.id}" placeholder="رابط الامتحان (اختياري)"></div>
+    </div>
+    <label style="font-size:.78rem;font-weight:700;color:var(--navy);">وصف الدرس</label>
+    <textarea data-field="description" data-lid="${l.id}" placeholder="وصف مختصر للحصة">${esc(l.description)}</textarea>
+    <div class="lf-actions">
+      <button class="btn gold sm" data-action="save-lesson" data-lid="${l.id}" ${busy?'disabled':''}>💾 حفظ التعديلات</button>
+      <button class="btn danger sm" data-action="del-lesson" data-lid="${l.id}" ${busy?'disabled':''}>حذف الحصة</button>
+    </div>
+  </div>`;
+}
+
+function lessonFormHtml(sid,gid){
+  const s = SUBJECT_META[sid];
+  const g = s.grades.find(x=>x.id===gid);
+  return `<div class="lesson-card" style="border:1.5px dashed var(--gold);">
+    <div style="font-weight:700;margin-bottom:10px;color:var(--navy);">➕ إضافة حصة جديدة — ${esc(s.name)} / ${esc(g.name)}</div>
+    <div class="lf-grid">
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">عنوان الحصة</label>
+        <input type="text" id="newLessonTitle" placeholder="عنوان الحصة"></div>
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">رابط الفيديو</label>
+        <input type="text" id="newLessonVideo" placeholder="رابط يوتيوب / mp4 / m3u8 (HLS)"></div>
+    </div>
+    <div class="lf-grid">
+      <div><label style="font-size:.78rem;font-weight:700;color:var(--navy);">رابط الامتحان</label>
+        <input type="text" id="newLessonExam" placeholder="رابط الامتحان (اختياري)"></div>
+    </div>
+    <label style="font-size:.78rem;font-weight:700;color:var(--navy);">وصف الدرس</label>
+    <textarea id="newLessonDesc" placeholder="وصف مختصر للحصة"></textarea>
+    <div class="lf-actions">
+      <button class="btn gold sm" data-action="create-lesson" data-sid="${sid}" data-gid="${gid}">💾 إضافة الحصة</button>
+      <button class="btn outline sm" data-action="cancel-new-lesson">إلغاء</button>
+    </div>
+  </div>`;
 }
 
 function adminAccessHtml(){
@@ -1192,23 +1105,6 @@ function bindEvents(){
   act('[data-action="close-modal"]', ()=>{ modal=null; render(); });
   act('[data-action="close-modal-bg"]', (e)=>{ if(e.target.classList.contains("overlay")){ modal=null; render(); } });
 
-  act('[data-action="submit-quiz"]', function(){
-    const globalId = this.dataset.gid2;
-    const parts = globalId.split("__");
-    const g = findGrade(parts[0], parts[1]);
-    const l = g && g.lessons.find(x=>x.id===parts[2]);
-    if(!l) return;
-    const result = gradeQuiz(globalId, l.quiz||[]);
-    quizResults[globalId] = result;
-    render();
-    const good = (result.score/result.total) >= 0.6;
-    playResultSound(good);
-  });
-  act('[data-action="retake-quiz"]', function(){
-    const globalId = this.dataset.gid2;
-    delete quizResults[globalId];
-    render();
-  });
   act('[data-action="auth-tab"]', function(){ authTab=this.getAttribute("data-tab"); render(); });
   act('[data-action="logout"]', async ()=>{
     await sb.auth.signOut();
@@ -1263,62 +1159,73 @@ function bindEvents(){
   act('[data-action="admin-logout"]', ()=>{ adminUnlocked=false; render(); });
   act('[data-action="admin-tab"]', function(){ adminTab=this.getAttribute("data-tab"); render(); });
 
-  act('[data-action="add-lesson"]', function(){
-    const sid=this.dataset.sid, gid=this.dataset.gid;
-    const g = findGrade(sid,gid);
-    const newId = "l"+(g.lessons.length+1)+"_"+Date.now().toString(36).slice(-4);
-    g.lessons.push({id:newId, title:"حصة جديدة", link:"", quiz:[]});
+  /* ---- lesson CRUD (Supabase "lessons" table) ---- */
+  act('[data-action="new-lesson-form"]', function(){
+    newLessonForm = {sid:this.dataset.sid, gid:this.dataset.gid};
     render();
   });
-  act('[data-action="del-lesson"]', function(){
-    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid;
-    const g = findGrade(sid,gid);
-    g.lessons = g.lessons.filter(l=>l.id!==lid);
-    render();
-  });
-  document.querySelectorAll('[data-edit]').forEach(inp=>{
-    inp.addEventListener("input", function(){
-      const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, field=this.dataset.edit;
-      const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
-      l[field]=this.value;
-    });
-  });
-  act('[data-action="save-content"]', async ()=>{ await saveContent(); setToast({type:"ok",text:"تم حفظ كل التعديلات على المنصة."}); });
+  act('[data-action="cancel-new-lesson"]', ()=>{ newLessonForm=null; render(); });
 
-  /* quiz admin editor */
-  act('[data-action="toggle-quiz-editor"]', function(){
-    const gid2 = this.dataset.gid2;
-    quizEditorOpen[gid2] = !quizEditorOpen[gid2];
-    render();
+  act('[data-action="create-lesson"]', async function(){
+    const sid=this.dataset.sid, gid=this.dataset.gid;
+    const title = document.getElementById("newLessonTitle").value.trim();
+    if(!title){ setToast({type:"err",text:"من فضلك أدخل عنوان الحصة."}); return; }
+    const row = {
+      title,
+      description: document.getElementById("newLessonDesc").value.trim(),
+      video_url: document.getElementById("newLessonVideo").value.trim(),
+      exam_url: document.getElementById("newLessonExam").value.trim(),
+      subject: sid,
+      grade: gid
+    };
+    this.disabled = true; this.textContent = "جاري الإضافة...";
+    try{
+      await insertLessonDB(row);
+      newLessonForm = null;
+      await reloadContent();
+      setToast({type:"ok",text:"تمت إضافة الحصة بنجاح، وهي ظاهرة الآن لكل المستخدمين."});
+    }catch(e){
+      console.error("insertLessonDB failed:", e);
+      setToast({type:"err",text:"تعذّر إضافة الحصة، تأكد من صلاحيات Supabase (RLS) على جدول lessons."});
+      render();
+    }
   });
-  act('[data-action="add-quiz-q"]', function(){
-    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid;
-    const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
-    if(!l.quiz) l.quiz = [];
-    l.quiz.push({q:"", o:["","","",""], correct:0});
-    render();
-  });
-  act('[data-action="del-quiz-q"]', function(){
-    const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx);
-    const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
-    l.quiz.splice(idx,1);
-    render();
-  });
-  document.querySelectorAll('[data-qedit]').forEach(inp=>{
-    inp.addEventListener("input", function(){
-      const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx), field=this.dataset.qedit;
-      const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
-      const q = l.quiz[idx];
-      if(field==="q") q.q = this.value;
-      else if(field==="correct") q.correct = Number(this.value);
-      else if(field[0]==="o") q.o[Number(field[1])] = this.value;
+
+  act('[data-action="save-lesson"]', async function(){
+    const lid = this.dataset.lid;
+    const patch = {};
+    document.querySelectorAll(`[data-field][data-lid="${CSS.escape(lid)}"]`).forEach(inp=>{
+      patch[inp.dataset.field] = inp.value.trim();
     });
-    if(inp.tagName==="SELECT"){
-      inp.addEventListener("change", function(){
-        const sid=this.dataset.sid, gid=this.dataset.gid, lid=this.dataset.lid, idx=Number(this.dataset.idx);
-        const g = findGrade(sid,gid); const l = g.lessons.find(x=>x.id===lid);
-        l.quiz[idx].correct = Number(this.value);
-      });
+    if(!patch.title){ setToast({type:"err",text:"عنوان الحصة لا يمكن أن يكون فارغاً."}); return; }
+    busyLessonId = lid; render();
+    try{
+      await updateLessonDB(lid, patch);
+      busyLessonId = null;
+      await reloadContent();
+      setToast({type:"ok",text:"تم حفظ تعديلات الحصة بنجاح، وستظهر لكل المستخدمين بعد تحديث الصفحة."});
+    }catch(e){
+      console.error("updateLessonDB failed:", e);
+      busyLessonId = null;
+      setToast({type:"err",text:"تعذّر حفظ التعديلات، تأكد من صلاحيات Supabase (RLS) على جدول lessons."});
+      render();
+    }
+  });
+
+  act('[data-action="del-lesson"]', async function(){
+    const lid = this.dataset.lid;
+    if(!confirm("هل أنت متأكد من حذف هذه الحصة؟ لا يمكن التراجع عن هذا الإجراء.")) return;
+    busyLessonId = lid; render();
+    try{
+      await deleteLessonDB(lid);
+      busyLessonId = null;
+      await reloadContent();
+      setToast({type:"ok",text:"تم حذف الحصة، واختفت الآن من جميع المستخدمين."});
+    }catch(e){
+      console.error("deleteLessonDB failed:", e);
+      busyLessonId = null;
+      setToast({type:"err",text:"تعذّر حذف الحصة، تأكد من صلاحيات Supabase (RLS) على جدول lessons."});
+      render();
     }
   });
 
