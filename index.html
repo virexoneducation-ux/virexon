@@ -425,9 +425,53 @@ async function insertLessonDB(row){
   return data;
 }
 async function updateLessonDB(id, patch){
-  const {data, error} = await sb.from("lessons").update(patch).eq("id", id).select().single();
-  if(error) throw error;
-  return data;
+  // تحقق صارم من الـ id قبل إرسال أي طلب — لو ناقص هنا فده هو السبب الحقيقي
+  // (مش .single() ولا RLS)، ولازم يبان في الـ Console فورًا بدل ما يوصل لخطأ PGRST116 غامض.
+  if(id === undefined || id === null || String(id).trim() === ""){
+    const err = new Error("updateLessonDB: id مفقود أو فارغ — لم يتم إرسال أي طلب لـ Supabase.");
+    console.error("[updateLessonDB]", err.message, "id received:", id);
+    throw err;
+  }
+  const cleanId = String(id).trim();
+
+  console.log("Updating lesson id:", cleanId);
+  console.log("Payload:", patch);
+
+  // .update().select() بدون .single() يرجّع مصفوفة (0 أو أكثر من صف) بدل ما يفجّر
+  // خطأ PGRST116/406 لو مفيش صف مطابق. ده هو الإصلاح الجذري لمشكلة .single().
+  const {data, error, status, statusText} = await sb
+    .from("lessons")
+    .update(patch)
+    .eq("id", cleanId)
+    .select();
+
+  if(error){
+    console.error("[updateLessonDB] فشل الطلب. status:", status, statusText);
+    console.error("[updateLessonDB] error.message:", error.message);
+    console.error("[updateLessonDB] error.code:", error.code);
+    console.error("[updateLessonDB] error.details:", error.details);
+    console.error("[updateLessonDB] error.hint:", error.hint);
+    throw error;
+  }
+
+  if(!data || data.length === 0){
+    // هنا السبب الحقيقي: لا يوجد صف في جدول lessons بهذا الـ id (أو RLS UPDATE policy
+    // بترجع 0 صفوف بدل خطأ صريح). رسالة واضحة بدل PGRST116 الغامض.
+    const notFoundErr = new Error(
+      `updateLessonDB: لم يتم العثور على أي صف في جدول lessons بالـ id = "${cleanId}". ` +
+      `تأكد أن هذا id موجود فعليًا في الجدول، وأن نوع العمود id في Supabase يطابق شكل القيمة المُرسلة.`
+    );
+    console.error("[updateLessonDB]", notFoundErr.message);
+    throw notFoundErr;
+  }
+
+  if(data.length > 1){
+    // احتياطي: لو أكثر من صف اتحدّث بنفس الـ id (يعني الـ id مش unique) — لازم يظهر تحذير واضح
+    console.warn(`[updateLessonDB] تحذير: تم تحديث ${data.length} صفوف بنفس الـ id="${cleanId}". تأكد أن عمود id فريد (UNIQUE/PK).`);
+  }
+
+  console.log("[updateLessonDB] نجح التحديث:", data[0]);
+  return data[0];
 }
 async function deleteLessonDB(id){
   const {error} = await sb.from("lessons").delete().eq("id", id);
@@ -1255,11 +1299,20 @@ function bindEvents(){
 
   act('[data-action="save-lesson"]', async function(){
     const lid = this.dataset.lid;
+    if(!lid){
+      console.error("[save-lesson] زر الحفظ ليس له data-lid — تعذّر معرفة أي درس يجب تحديثه.");
+      setToast({type:"err",text:"خطأ داخلي: لم يتم العثور على معرّف الدرس (id) على الزر."});
+      return;
+    }
     const patch = {};
     document.querySelectorAll(`[data-field][data-lid="${CSS.escape(lid)}"]`).forEach(inp=>{
       patch[inp.dataset.field] = inp.value.trim();
     });
     if(!patch.title){ setToast({type:"err",text:"عنوان الحصة لا يمكن أن يكون فارغاً."}); return; }
+
+    console.log("Updating lesson id:", lid);
+    console.log("Payload:", patch);
+
     busyLessonId = lid; render();
     try{
       await updateLessonDB(lid, patch);
@@ -1269,7 +1322,8 @@ function bindEvents(){
     }catch(e){
       console.error("updateLessonDB failed:", e);
       busyLessonId = null;
-      setToast({type:"err",text:"تعذّر حفظ التعديلات، تأكد من صلاحيات Supabase (RLS) على جدول lessons."});
+      // نعرض رسالة الخطأ الفعلية بدل تخمين RLS دائمًا — لأن السبب هنا قد يكون id غير مطابق
+      setToast({type:"err",text:"تعذّر حفظ التعديلات: " + (e && e.message ? e.message : "خطأ غير معروف") + " — افتح Console للتفاصيل."});
       render();
     }
   });
