@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Virexon | فيركسون</title>
+<title>VIREXON | منصة تعليمية للرياضيات والمحاسبة</title>
+<meta name="description" content="منصة VIREXON التعليمية توفر دروس الرياضيات والمحاسبة لجميع المراحل الدراسية بأسلوب احترافي ومنظم يساعد الطلاب على التفوق الدراسي.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
@@ -466,6 +467,32 @@
   @media(max-width:760px){.footer-bottom{justify-content:center;text-align:center;}}
   .footer-bottom a{text-decoration:underline;}
 
+  /* ===== floating WhatsApp button ===== */
+  .wa-float{
+    position:fixed;inset-inline-end:20px;bottom:20px;z-index:80;
+    width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(37,211,102,.45);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .wa-float:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 14px 30px rgba(37,211,102,.55);}
+  .wa-float svg{width:28px;height:28px;}
+  @media(max-width:640px){.wa-float{width:52px;height:52px;inset-inline-end:14px;bottom:14px;}.wa-float svg{width:25px;height:25px;}}
+
+  /* ===== support section ===== */
+  .support-box{
+    background:linear-gradient(150deg,var(--navy) 0%, var(--navy-deep) 100%);color:#fff;border-radius:22px;
+    padding:32px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    background-image:radial-gradient(circle at 8% 100%, rgba(37,211,102,.20), transparent 50%),
+                      linear-gradient(150deg,var(--navy) 0%, var(--navy-deep) 100%);
+  }
+  .support-box-icon{width:64px;height:64px;border-radius:16px;flex-shrink:0;background:rgba(37,211,102,.18);border:1px solid rgba(37,211,102,.4);color:#25D366;display:flex;align-items:center;justify-content:center;}
+  .support-box-body{flex:1;min-width:220px;}
+  .support-box-body h2{color:#fff;font-size:1.3rem;margin-bottom:6px;}
+  .support-box-body p{color:rgba(255,255,255,.8);font-size:.92rem;margin:0;max-width:520px;line-height:1.8;}
+  .support-box-cta{flex-shrink:0;background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,.4);}
+  .support-box-cta:hover{background:#1ebc59;box-shadow:0 10px 22px rgba(37,211,102,.5);}
+  @media(max-width:640px){.support-box{padding:22px;flex-direction:column;align-items:flex-start;text-align:right;}.support-box-cta{width:100%;justify-content:center;}}
+
   /* admin */
   .admin-grid{display:grid;grid-template-columns:260px 1fr;gap:24px;}
   @media(max-width:760px){.admin-grid{grid-template-columns:1fr;}}
@@ -494,6 +521,9 @@
 </head>
 <body>
 <div id="app"></div>
+<a class="wa-float" href="https://wa.me/201107558827" target="_blank" rel="noopener noreferrer" aria-label="تواصل عبر واتساب">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -526,9 +556,7 @@ const MONTH_LESSONS = 8;
 const WHATSAPP_NUMBER = "201107558827";
 const VODAFONE_CASH = "+20 10 19311539";
 const INSTAPAY_LINK = "https://ipn.eg/S/dinafaisal1010/instapay/8IY2Bm";
-/* روابط التواصل الاجتماعي في الفوتر — عدّل هذه الروابط لتشير لصفحاتكم الفعلية */
-const FACEBOOK_LINK = "https://facebook.com/virexon";
-const TELEGRAM_LINK = "https://t.me/virexon";
+/* التواصل الرسمي الوحيد للمنصة هو واتساب */
 
 /* ---------------- subject/grade structure (metadata only — NOT lesson data) ----------------
    هذا الكائن يحدد فقط شكل المواد والصفوف الدراسية (الاسم/الأيقونة/المدرّس) وهو ثابت في الكود
@@ -536,7 +564,7 @@ const TELEGRAM_LINK = "https://t.me/virexon";
 const SUBJECT_META = {
   math: {
     id:"math", name:"الرياضيات", teacher:"مستر مصطفى عمران", icon:"📐",
-    desc:"مسارات تعليمية متكاملة تغطي جميع الصفوف الدراسية بأسلوب احترافي وسهل الفهم.",
+    desc:"شرح شامل للرياضيات لجميع المراحل الدراسية مع تدريبات وأمثلة تساعد على إتقان المنهج بسهولة.",
     grades: [
       {id:"g4", name:"الصف الرابع الابتدائي"},
       {id:"g5", name:"الصف الخامس الابتدائي"},
@@ -550,7 +578,7 @@ const SUBJECT_META = {
   },
   acc: {
     id:"acc", name:"المحاسبة", teacher:"مستر هشام سمير", icon:"📊",
-    desc:"تعلم المحاسبة خطوة بخطوة من الأساسيات حتى التطبيقات العملية المتقدمة.",
+    desc:"تأسيس قوي في المحاسبة المالية والتجارية مع تطبيقات عملية تساعدك على فهم المادة وإتقانها.",
     grades: [
       {id:"sec2acc", name:"الصف الثاني الثانوي"},
       {id:"tj1", name:"الصف الأول تجارة"},
@@ -914,8 +942,6 @@ const ICONS = {
   user:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
   eye:'<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
   whatsapp:'<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
-  facebook:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
-  telegram:'<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
   shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
   doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/>',
   gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>'
@@ -1278,9 +1304,7 @@ function footerHtml(){
         <div class="footer-col">
           <h5>الدعم</h5>
           <ul>
-            <li><a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener noreferrer">${ico('whatsapp')} واتساب</a></li>
-            <li><a href="${esc(FACEBOOK_LINK)}" target="_blank" rel="noopener noreferrer">${ico('facebook')} فيسبوك</a></li>
-            <li><a href="${esc(TELEGRAM_LINK)}" target="_blank" rel="noopener noreferrer">${ico('telegram')} تيليجرام</a></li>
+            <li><a href="https://wa.me/${WHATSAPP_NUMBER}" target="_blank" rel="noopener noreferrer">${ico('whatsapp')} تواصل عبر واتساب</a></li>
             <li><button data-action="open-legal" data-legal="privacy">${ico('shield')} سياسة الخصوصية</button></li>
             <li><button data-action="open-legal" data-legal="terms">${ico('doc')} الشروط والأحكام</button></li>
           </ul>
@@ -1339,25 +1363,25 @@ function homeHtml(){
   <section class="hero">
     <div>
       <div class="eyebrow">${ico('layers','')} منصة تعليمية متخصصة في الرياضيات والمحاسبة</div>
-      <h1>أتقن الرياضيات والمحاسبة مع شرح احترافي وخطة تعلم واضحة</h1>
-      <p>محتوى تعليمي منظم يغطي جميع المراحل الدراسية، مع دروس وتمارين مصممة لمساعدتك على تحقيق أفضل النتائج.</p>
+      <h1>تعلّم الرياضيات والمحاسبة بأسلوب مبسط ومنظم يساعدك على التفوق الدراسي وتحقيق أفضل النتائج.</h1>
+      <p>دروس احترافية وتمارين تطبيقية وخطة تعلم واضحة تغطي مختلف المراحل الدراسية وفق المنهج المصري.</p>
       <div class="hero-actions">
-        <a href="#subjectsGrid" class="btn gold">${ico('play')} ابدأ التعلم</a>
-        <a href="#subjectsGrid" class="btn outline-light">${ico('layers')} استكشف المحتوى</a>
+        <a href="#subjectsGrid" class="btn gold">${ico('play')} ابدأ رحلتك التعليمية</a>
+        <a href="#subjectsGrid" class="btn outline-light">${ico('layers')} تصفح المواد الدراسية</a>
       </div>
       <div class="hero-trust">
         <span>${ico('check')} محتوى منظم حسب المنهج المصري</span>
-        <span>${ico('user')} مدرّسون متخصصون</span>
+        <span>${ico('user')} خبراء التعليم</span>
         <span>${ico('eye')} متابعة تقدمك أولًا بأول</span>
       </div>
     </div>
     <div class="hero-panel">
       <div class="hp-title">المنصة في أرقام</div>
-      <div class="row"><span class="stat-label">${ico('layers','')} المواد الدراسية</span><span class="price">${Object.keys(content).length}</span></div>
-      <div class="row"><span class="stat-label">${ico('book','')} الصفوف الدراسية المتاحة</span><span class="price">${gradesTotal}</span></div>
-      <div class="row"><span class="stat-label">${ico('user','')} مدرّسون متخصصون</span><span class="price">${teachersTotal}</span></div>
-      <div class="row"><span class="stat-label">${ico('layers','')} سعر الحصة الواحدة</span><span class="price">${PRICE_LESSON} ج.م</span></div>
-      <div class="row"><span class="stat-label">${ico('layers','')} الاشتراك الشهري</span><span class="price">${PRICE_MONTH} ج.م</span></div>
+      <div class="row"><span class="stat-label">${ico('layers','')} المواد المتاحة</span><span class="price">${Object.keys(content).length}</span></div>
+      <div class="row"><span class="stat-label">${ico('book','')} الصفوف المغطاة</span><span class="price">${gradesTotal}</span></div>
+      <div class="row"><span class="stat-label">${ico('user','')} خبراء التعليم</span><span class="price">${teachersTotal}</span></div>
+      <div class="row"><span class="stat-label">${ico('layers','')} سعر الحصة يبدأ من</span><span class="price">${PRICE_LESSON} ج.م</span></div>
+      <div class="row"><span class="stat-label">${ico('layers','')} باقات الاشتراك تبدأ من</span><span class="price">${PRICE_MONTH} ج.م</span></div>
     </div>
   </section>
   ${searchBoxHtml()}
@@ -1366,15 +1390,15 @@ function homeHtml(){
     <div class="features-strip">
       <div class="feature-card">
         <div class="feature-icon">${ico('book')}</div>
-        <div><h4>شرح احترافي خطوة بخطوة</h4><p>دروس مرتبة بشكل تصاعدي تبني الفهم تدريجيًا بدل الحفظ العشوائي.</p></div>
+        <div><h4>شرح احترافي خطوة بخطوة</h4><p>شرح مبسط ومنظم يركز على الفهم الحقيقي للمفاهيم وحل المسائل بطريقة عملية.</p></div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">${ico('eye')}</div>
-        <div><h4>متابعة دقيقة للتقدم</h4><p>لوحة تعرض لك عدد الحصص المكتملة والمتبقية في كل مادة وصف دراسي.</p></div>
+        <div><h4>متابعة دقيقة للتقدم</h4><p>تتبع مستمر لمستوى تقدمك داخل كل مادة لمعرفة ما تم إنجازه وما تبقى من الخطة الدراسية.</p></div>
       </div>
       <div class="feature-card">
         <div class="feature-icon">${ico('shield')}</div>
-        <div><h4>وصول آمن ومضمون</h4><p>محتوى الحصص متاح فقط بعد الاشتراك، بحماية تمنع مشاركة الفيديو خارج المنصة.</p></div>
+        <div><h4>وصول آمن ومضمون</h4><p>نظام حماية متطور يضمن وصول المحتوى للمشتركين فقط مع الحفاظ على حقوق المدرسين والمنصة.</p></div>
       </div>
     </div>
   </section>
@@ -1406,9 +1430,19 @@ function homeHtml(){
             <span class="subj-meta">${ico('book')} ${lessonsCount} حصة تعليمية</span>
           </div>
           ${hasAccess? `<div class="subj-progress"><div class="progress-track"><div class="progress-fill" style="width:${prog.percent}%"></div></div></div>` : ""}
-          <span class="btn gold sm subj-cta">استكشف المحتوى ${ico('arrow')}</span>
+          <span class="btn gold sm subj-cta">تصفح المواد الدراسية ${ico('arrow')}</span>
         </div>`;
       }).join("")}
+    </div>
+  </section>
+  <section>
+    <div class="support-box">
+      <div class="support-box-icon">${ico('whatsapp')}</div>
+      <div class="support-box-body">
+        <h2>الدعم الفني</h2>
+        <p>فريق الدعم جاهز للرد على استفساراتك ومساعدتك في الاشتراكات والمحتوى الدراسي عبر واتساب.</p>
+      </div>
+      <a class="btn support-box-cta" href="https://wa.me/201107558827" target="_blank" rel="noopener noreferrer">${ico('whatsapp')} تواصل عبر واتساب</a>
     </div>
   </section>`;
 }
@@ -1436,7 +1470,7 @@ function subjectHtml(sid){
         <span class="subject-banner-count">${ico('user')} ${esc(s.teacher)}</span>
       </div>
     </div>
-    <a href="#gradeGrid" class="btn gold subject-banner-cta">عرض الصفوف ${ico('arrow')}</a>
+    <a href="#gradeGrid" class="btn gold subject-banner-cta">استكشف الصفوف ${ico('arrow')}</a>
   </section>
   <div style="height:16px;"></div>
   ${currentUser && unlockedIds.length>0 ? progressBarHtml(prog.done, prog.total, "تقدمك في مادة "+s.name) : ""}
@@ -1462,7 +1496,7 @@ function subjectHtml(sid){
             <span class="grade-percent">${gProg.percent}% مكتمل</span>
             ${gLastTs? `<span class="last-watch">${ico('eye','')} ${timeAgoArabic(gLastTs)}</span>` : ""}
           </div>` : ""}
-        <button class="btn sm" data-nav='{"name":"grade","sid":"${sid}","gid":"${g.id}"}'>${ico('eye')} عرض الدروس</button>
+        <button class="btn sm" data-nav='{"name":"grade","sid":"${sid}","gid":"${g.id}"}'>${ico('eye')} استعراض الحصص</button>
       </div>`;
     }).join("")}
   </div>`;
