@@ -4,53 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Virexon | منصة فيريكسون التعليمية</title>
-<meta name="description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة وفق المنهج المصري">
-<meta name="keywords" content="رياضيات, محاسبة, تعليم, منصة تعليمية, شرح الرياضيات, شرح المحاسبة, Virexon">
-<meta name="author" content="Virexon">
-<meta name="robots" content="index,follow">
-<meta name="language" content="Arabic">
-<link rel="icon" href="./favicon.ico">
-<link rel="icon" type="image/png" href="./favicon.png">
+<meta name="description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة للمرحلتين الإعدادية والثانوية وفق المنهج المصري.">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://virexoneducation-ux.github.io/virexon/">
+<meta property="og:url" content="https://virexon.com/">
 <meta property="og:title" content="Virexon | منصة فيريكسون التعليمية">
-<meta property="og:description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة وفق المنهج المصري">
-<meta property="og:image" content="https://virexoneducation-ux.github.io/virexon/og-image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="ar_EG">
-<meta property="og:site_name" content="Virexon">
+<meta property="og:description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة للمرحلتين الإعدادية والثانوية وفق المنهج المصري.">
+<meta property="og:image" content="/og-image.jpg">
 
 <!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:url" content="https://virexoneducation-ux.github.io/virexon/">
-<meta name="twitter:title" content="Virexon | منصة فيريكسون التعليمية">
-<meta name="twitter:description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة وفق المنهج المصري">
-<meta name="twitter:image" content="https://virexoneducation-ux.github.io/virexon/og-image.jpg">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="https://virexon.com/">
+<meta property="twitter:title" content="Virexon | منصة فيريكسون التعليمية">
+<meta property="twitter:description" content="منصة تعليمية متخصصة في الرياضيات والمحاسبة للمرحلتين الإعدادية والثانوية وفق المنهج المصري.">
+<meta property="twitter:image" content="/og-image.jpg">
 
 <!-- Canonical URL -->
-<link rel="canonical" href="https://virexoneducation-ux.github.io/virexon/">
-
-<!-- Structured Data (JSON-LD) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Virexon",
-  "alternateName": "فيريكسون",
-  "url": "https://virexoneducation-ux.github.io/virexon/",
-  "logo": "https://virexoneducation-ux.github.io/virexon/og-image.jpg",
-  "description": "منصة تعليمية متخصصة في الرياضيات والمحاسبة وفق المنهج المصري",
-  "sameAs": [],
-  "areaServed": {
-    "@type": "Country",
-    "name": "Egypt"
-  },
-  "inLanguage": "ar"
-}
-</script>
+<link rel="canonical" href="https://virexon.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css">
@@ -474,6 +445,39 @@
     width:100%;padding:11px 14px;border-radius:10px;border:1.5px solid var(--line);font-family:inherit;font-size:.95rem;
   }
   .field input:focus,.field select:focus{outline:none;border-color:var(--gold);}
+  .field-hint{
+    display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding:10px 12px;
+    background:rgba(212,162,58,.10);border:1px solid rgba(212,162,58,.32);border-radius:10px;
+    color:var(--gold-dark);font-size:.8rem;line-height:1.7;
+  }
+  .field-hint svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--gold-dark);}
+  .field-hint b{color:var(--navy);}
+
+  /* ===== device activation modals ===== */
+  .device-box{text-align:center;padding:6px 0 4px;}
+  .device-box .device-ico{
+    width:56px;height:56px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;
+    background:rgba(18,58,89,.08);color:var(--navy);
+  }
+  .device-box.blocked .device-ico{background:rgba(176,65,62,.12);color:var(--danger);}
+  .device-box .device-ico svg{width:28px;height:28px;}
+  .device-box h3{color:var(--navy);margin-bottom:8px;}
+  .device-box p{color:#5a6b76;font-size:.92rem;line-height:1.85;margin-bottom:6px;}
+  .device-meta{background:var(--paper-2);border-radius:10px;padding:10px 14px;margin:14px 0;font-size:.82rem;color:var(--navy);text-align:right;}
+  .device-meta div{display:flex;justify-content:space-between;padding:4px 0;}
+  .device-meta div span:first-child{color:#5a6b76;}
+  .device-actions{display:flex;gap:10px;margin-top:18px;}
+  .device-actions .btn{flex:1;}
+  .cooldown-note{margin-top:10px;font-size:.78rem;color:#8a97a1;}
+  table.dev-table{width:100%;border-collapse:collapse;font-size:.85rem;}
+  table.dev-table th,table.dev-table td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;}
+  table.dev-table th{color:var(--navy);font-family:'Cairo';font-size:.78rem;background:var(--paper-2);}
+  table.dev-table td.status-active{color:var(--ok);font-weight:700;}
+  table.dev-table td.status-disabled{color:var(--danger);font-weight:700;}
+  .dev-btns{display:flex;gap:6px;flex-wrap:wrap;}
+  .dev-btns button{padding:5px 9px;font-size:.74rem;border-radius:7px;background:var(--paper-2);color:var(--navy);font-weight:700;}
+  .dev-btns button.danger{background:rgba(176,65,62,.12);color:var(--danger);}
+  .dev-btns button.ok{background:rgba(46,125,91,.12);color:var(--ok);}
   .modal-close{float:left;background:transparent;color:#8a97a1;font-size:1.3rem;}
   .tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--paper-2);padding:4px;border-radius:10px;}
   .tabs button{flex:1;padding:9px;border-radius:8px;background:transparent;font-weight:700;color:#5a6b76;}
@@ -961,6 +965,121 @@ function supabaseErrorToArabic(error){
   if(msg.includes("Unable to validate email")) return "صيغة الإيميل غير صحيحة.";
   return msg || "حدث خطأ غير متوقع، حاول مرة أخرى.";
 }
+/* ================================================================
+   ---------------- device activation (ربط الحساب بجهاز واحد) ----------------
+   ملاحظة أمان مهمة: أي منطق تحقق يعمل داخل جافاسكريبت في المتصفح يمكن نظرياً
+   تجاوزه من شخص يفتح الـ Console ويستدعي Supabase مباشرة (لا يوجد سيرفر خاص بنا
+   في هذا المشروع، فقط Supabase كـ Backend-as-a-Service). لذلك التطبيق الحقيقي
+   والصارم للقاعدة "جهاز واحد فقط" يجب أن يتم عبر RPC functions في Postgres
+   (SECURITY DEFINER) مع منع أي وصول مباشر لجدول device_activations من خارج هذه
+   الدوال (راجع ملف device-activation-migration.sql المرفق). الكود هنا يستدعي
+   هذه الدوال ويبني تجربة المستخدم (UI) حولها فقط. ================================================================ */
+
+/* بصمة جهاز أفضل جهد ممكن (Best-effort Device Fingerprint):
+   نجمع خصائص شبه ثابتة للجهاز/المتصفح ثم نعمل هاش SHA-256 لها. هذه البصمة
+   لا تُخزَّن كمصدر وحيد للحقيقة في localStorage، بل تُعاد حسابتها من صفر في
+   كل تسجيل دخول وتُقارن بالقيمة المخزنة في قاعدة البيانات (Supabase) — بحيث
+   حذف الكوكيز أو الـ localStorage وحده لا يكفي لتجاوز الحماية. */
+async function getDeviceFingerprint(){
+  let gpuInfo = "";
+  try{
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if(gl){
+      const dbg = gl.getExtension("WEBGL_debug_renderer_info");
+      if(dbg) gpuInfo = gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || "";
+    }
+  }catch(e){ /* تجاهل — بعض المتصفحات تمنع قراءة معلومات الـ GPU */ }
+
+  const parts = [
+    navigator.userAgent || "",
+    navigator.platform || "",
+    navigator.language || "",
+    String(screen.width)+"x"+String(screen.height),
+    String(screen.colorDepth||""),
+    (Intl.DateTimeFormat().resolvedOptions().timeZone)||"",
+    String(navigator.hardwareConcurrency||""),
+    String(navigator.maxTouchPoints||""),
+    gpuInfo
+  ];
+  return await hashText(parts.join("||"));
+}
+/* اسم مبسّط للجهاز لعرضه للأدمن فقط (تقريبي وليس دقيقاً 100%) */
+function guessDeviceLabel(){
+  const ua = navigator.userAgent || "";
+  let os = "غير معروف";
+  if(/Windows/i.test(ua)) os = "ويندوز";
+  else if(/Android/i.test(ua)) os = "أندرويد";
+  else if(/iPhone|iPad|iPod/i.test(ua)) os = "آيفون/آيباد";
+  else if(/Mac OS X/i.test(ua)) os = "ماك";
+  else if(/Linux/i.test(ua)) os = "لينكس";
+  let browser = "متصفح";
+  if(/Edg\//i.test(ua)) browser = "Edge";
+  else if(/Chrome\//i.test(ua)) browser = "Chrome";
+  else if(/Firefox\//i.test(ua)) browser = "Firefox";
+  else if(/Safari\//i.test(ua)) browser = "Safari";
+  return `${os} - ${browser}`;
+}
+function formatArabicDate(iso){
+  if(!iso) return "—";
+  try{
+    return new Date(iso).toLocaleDateString("ar-EG", {year:"numeric", month:"long", day:"numeric"});
+  }catch(e){ return iso; }
+}
+
+/* يتحقق من حالة الجهاز عبر RPC (raw select/insert من العميل غير مسموح به عمداً
+   بحكم RLS — كل شيء يمر عبر الدالة fn_check_device في قاعدة البيانات). */
+async function checkDeviceStatus(email, deviceId){
+  try{
+    const {data, error} = await sb.rpc("fn_check_device", {p_email: email, p_device_id: deviceId});
+    if(error) throw error;
+    return data; // {status:"none"|"match"|"mismatch"|"disabled", device_name, first_activation_date}
+  }catch(e){
+    console.error("[checkDeviceStatus] فشل استدعاء fn_check_device — تأكد من تنفيذ ملف SQL المرفق على Supabase.", e);
+    /* في حال عدم تنفيذ الـ Migration بعد، لا نمنع المستخدمين الحاليين من الدخول
+       (حفاظاً على بند "عدم التأثير على المستخدمين الحاليين")، لكن نُبقي الميزة معطّلة بأمان. */
+    return {status:"unavailable"};
+  }
+}
+async function activateDeviceOnServer(email, deviceId, deviceName){
+  try{
+    const {data, error} = await sb.rpc("fn_activate_device", {p_email:email, p_device_id:deviceId, p_device_name:deviceName});
+    if(error) throw error;
+    return {ok:true, data};
+  }catch(e){ console.error("[activateDeviceOnServer] فشل:", e); return {ok:false, error:e}; }
+}
+async function transferDeviceOnServer(email, newDeviceId, newDeviceName){
+  try{
+    const {data, error} = await sb.rpc("fn_transfer_device", {p_email:email, p_new_device_id:newDeviceId, p_new_device_name:newDeviceName});
+    if(error) throw error;
+    return data; // {status:"transferred"|"cooldown", days_left}
+  }catch(e){ console.error("[transferDeviceOnServer] فشل:", e); return {status:"error", error:e}; }
+}
+
+/* ---------------- admin device management (لوحة الإدارة) ---------------- */
+async function adminListDevices(){
+  try{
+    const {data, error} = await sb.rpc("fn_admin_list_devices", {p_admin_password: ADMIN_FIXED_PASSWORD});
+    if(error) throw error;
+    return data || [];
+  }catch(e){ console.error("[adminListDevices] فشل:", e); return []; }
+}
+async function adminResetDevice(email){
+  const {data, error} = await sb.rpc("fn_admin_reset_device", {p_admin_password: ADMIN_FIXED_PASSWORD, p_email: email});
+  if(error){ console.error(error); return {ok:false}; }
+  return {ok:true, data};
+}
+async function adminSetStatus(email, status){
+  const {data, error} = await sb.rpc("fn_admin_set_status", {p_admin_password: ADMIN_FIXED_PASSWORD, p_email: email, p_status: status});
+  if(error){ console.error(error); return {ok:false}; }
+  return {ok:true, data};
+}
+async function adminAllowTransferNow(email){
+  const {data, error} = await sb.rpc("fn_admin_allow_transfer", {p_admin_password: ADMIN_FIXED_PASSWORD, p_email: email});
+  if(error){ console.error(error); return {ok:false}; }
+  return {ok:true, data};
+}
+
 async function getAdminPass(){
   try{
     const r = await window.storage.get("admin:pass", true);
@@ -1674,12 +1793,75 @@ function adminHtml(){
     <div class="admin-side">
       <button class="${adminTab==='content'?'active':''}" data-action="admin-tab" data-tab="content">إدارة المحتوى والفيديوهات</button>
       <button class="${adminTab==='access'?'active':''}" data-action="admin-tab" data-tab="access">تفعيل اشتراكات الطلاب</button>
+      <button class="${adminTab==='devices'?'active':''}" data-action="admin-tab" data-tab="devices">أجهزة الطلاب (تفعيل الحساب)</button>
       <button class="${adminTab==='pass'?'active':''}" data-action="admin-tab" data-tab="pass">تغيير كلمة المرور</button>
       <hr style="margin:14px 0;border-color:var(--line)">
       <button data-action="admin-logout" style="color:var(--danger)">تسجيل خروج الإدارة</button>
     </div>
-    <div class="admin-panel-box">${adminTab==='content'?adminContentHtml():adminTab==='access'?adminAccessHtml():adminPassHtml()}</div>
+    <div class="admin-panel-box">${
+      adminTab==='content' ? adminContentHtml() :
+      adminTab==='access' ? adminAccessHtml() :
+      adminTab==='devices' ? adminDevicesHtml() :
+      adminPassHtml()
+    }</div>
   </div>`;
+}
+
+/* ---------------- admin devices tab (ربط الحساب بجهاز واحد) ---------------- */
+let adminDevicesList = [];
+let adminDevicesLoading = false;
+let adminDevicesLoaded = false;
+async function loadAdminDevicesIfNeeded(){
+  if(adminDevicesLoaded || adminDevicesLoading) return;
+  adminDevicesLoading = true;
+  adminDevicesList = await adminListDevices();
+  adminDevicesLoading = false;
+  adminDevicesLoaded = true;
+  render();
+}
+function adminDevicesHtml(){
+  if(!adminDevicesLoaded && !adminDevicesLoading){ loadAdminDevicesIfNeeded(); }
+  if(adminDevicesLoading){
+    return `<h3>أجهزة الطلاب</h3><p style="color:#5a6b76;">جاري التحميل...</p>`;
+  }
+  const rows = adminDevicesList||[];
+  const statusLabel = s => s==="active" ? "مُفعّل" : s==="disabled" ? "معطّل" : (s||"—");
+  const statusClass = s => s==="active" ? "status-active" : s==="disabled" ? "status-disabled" : "";
+  return `
+  <h3>أجهزة الطلاب المرتبطة بالحسابات</h3>
+  <p style="color:#5a6b76;font-size:.88rem;margin-bottom:14px;">
+    كل حساب طالب مرتبط بجهاز واحد فقط. يمكنك من هنا إعادة تعيين الجهاز (لفتح تفعيل جديد)،
+    تعطيل/تفعيل الحساب، أو السماح بنقل التفعيل فوراً دون انتظار الـ 30 يوماً.
+  </p>
+  <button class="btn outline sm" data-action="devices-refresh" style="margin-bottom:14px;">🔄 تحديث القائمة</button>
+  ${rows.length===0 ? `<div class="empty" style="padding:24px;text-align:center;color:#8a97a1;">لا يوجد أي جهاز مسجّل بعد، أو لم يتم تنفيذ ملف SQL المرفق على Supabase.</div>` : `
+  <div style="overflow-x:auto;">
+  <table class="dev-table">
+    <thead><tr>
+      <th>إيميل الطالب</th><th>الجهاز</th><th>أول تفعيل</th><th>آخر نقل تفعيل</th><th>الحالة</th><th>إجراءات</th>
+    </tr></thead>
+    <tbody>
+      ${rows.map(r=>`
+        <tr>
+          <td>${esc(r.student_email)}</td>
+          <td>${esc(r.device_name||"غير معروف")}</td>
+          <td>${formatArabicDate(r.first_activation_date)}</td>
+          <td>${r.last_activation_transfer ? formatArabicDate(r.last_activation_transfer) : "—"}</td>
+          <td class="${statusClass(r.activation_status)}">${statusLabel(r.activation_status)}</td>
+          <td>
+            <div class="dev-btns">
+              <button data-action="device-admin-reset" data-email="${esc(r.student_email)}">إعادة تعيين</button>
+              ${r.activation_status==='active'
+                ? `<button class="danger" data-action="device-admin-disable" data-email="${esc(r.student_email)}">تعطيل</button>`
+                : `<button class="ok" data-action="device-admin-enable" data-email="${esc(r.student_email)}">تفعيل</button>`}
+              <button class="ok" data-action="device-admin-allow-transfer" data-email="${esc(r.student_email)}">السماح بنقل فوري</button>
+            </div>
+          </td>
+        </tr>
+      `).join("")}
+    </tbody>
+  </table>
+  </div>`}`;
 }
 
 let newLessonForm = null; // {sid,gid} while the "add lesson" form is open, else null
@@ -1781,8 +1963,19 @@ function adminPassHtml(){
 }
 
 /* ---------------- modals ---------------- */
-let modal = null; // "auth" | "pay" | "legal"
+let modal = null; // "auth" | "pay" | "legal" | "device-confirm" | "device-blocked"
 let authTab = "login";
+let pendingDevice = null; // {email, deviceId, deviceName, pass, existingDeviceName?, firstActivationDate?, cooldownDaysLeft?}
+
+async function finishLoginSuccess(successMsg){
+  await ensureStudentRow(currentUser.id, currentUser.email);
+  grants = await getGrants(currentUser.email);
+  completedLessons = await getCompletedLessons(currentUser.email);
+  lastWatchMap = await getLastWatchMap(currentUser.email);
+  pendingDevice = null;
+  modal = null;
+  setToast({type:"ok", text: successMsg || "تم تسجيل الدخول بنجاح."});
+}
 let legalTab = "privacy";
 function modalHtml(){
   if(modal==="auth"){
@@ -1795,9 +1988,63 @@ function modalHtml(){
           <button class="${authTab==='register'?'active':''}" data-action="auth-tab" data-tab="register">حساب جديد</button>
         </div>
         <div class="field"><label>البريد الإلكتروني (Gmail)</label><input type="email" id="authEmail" placeholder="name@gmail.com"></div>
-        <div class="field"><label>كلمة المرور</label><input type="password" id="authPass"></div>
+        <div class="field">
+          <label>كلمة مرور المنصة</label>
+          <input type="password" id="authPass" placeholder="••••••••">
+          <div class="field-hint">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>أدخل <b>كلمة مرور المنصة</b> التي حصلت عليها بعد الاشتراك، <u>وليس</u> كلمة مرور Gmail.</span>
+          </div>
+        </div>
         <button class="btn gold" style="width:100%" data-action="${authTab==='login'?'do-login':'do-register'}">${authTab==='login'?'دخول':'إنشاء الحساب'}</button>
         <p style="font-size:.78rem;color:#8a97a1;margin-top:12px;">استخدم نفس الإيميل الذي سترسله عند الدفع، حتى يتم تفعيل اشتراكك عليه.</p>
+      </div>
+    </div>`;
+  }
+  if(modal==="device-confirm"){
+    const d = pendingDevice || {};
+    return `<div class="overlay" data-action="close-modal-bg">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div style="clear:both"></div>
+        <div class="device-box">
+          <div class="device-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+          </div>
+          <h3>تفعيل المنصة على هذا الجهاز؟</h3>
+          <p>هذا أول تسجيل دخول لحسابك (<b>${esc(d.email||"")}</b>). هل تريد تفعيل المنصة على هذا الجهاز؟</p>
+          <p style="font-size:.78rem;color:#8a97a1;">بعد الموافقة سيتم ربط حسابك بهذا الجهاز فقط، ولن تتمكن من الدخول من جهاز آخر إلا عبر "نقل التفعيل" (متاح مرة كل 30 يوم).</p>
+          <div class="device-actions">
+            <button class="btn outline" data-action="device-confirm-no">إلغاء</button>
+            <button class="btn gold" data-action="device-confirm-yes">تفعيل على هذا الجهاز</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+  if(modal==="device-blocked"){
+    const d = pendingDevice || {};
+    const cooldownNote = d.cooldownDaysLeft
+      ? `<div class="cooldown-note">⏳ يمكنك نقل التفعيل بعد ${d.cooldownDaysLeft} يوم/أيام من آخر عملية نقل.</div>`
+      : `<div class="cooldown-note">يُسمح بنقل التفعيل مرة واحدة كل 30 يوماً، وسيتم إلغاء تفعيل الجهاز القديم تلقائياً.</div>`;
+    return `<div class="overlay" data-action="close-modal-bg">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div style="clear:both"></div>
+        <div class="device-box blocked">
+          <div class="device-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>
+          </div>
+          <h3>هذا الحساب مفعل على جهاز آخر</h3>
+          <p>هذا الحساب مفعل بالفعل على جهاز آخر. إذا كنت تريد نقل التفعيل اضغط "نقل التفعيل".</p>
+          <div class="device-meta">
+            <div><span>الجهاز المرتبط حالياً</span><span>${esc(d.existingDeviceName||"غير معروف")}</span></div>
+            <div><span>تاريخ أول تفعيل</span><span>${formatArabicDate(d.firstActivationDate)}</span></div>
+          </div>
+          ${cooldownNote}
+          <div class="device-actions">
+            <button class="btn outline" data-action="close-modal">إغلاق</button>
+            <button class="btn gold" data-action="device-transfer" ${d.cooldownDaysLeft?"disabled":""}>نقل التفعيل إلى هذا الجهاز</button>
+          </div>
+        </div>
       </div>
     </div>`;
   }
@@ -1880,16 +2127,94 @@ function bindEvents(){
   act('[data-action="do-login"]', async ()=>{
     const email = document.getElementById("authEmail").value.trim().toLowerCase();
     const pass = document.getElementById("authPass").value;
-    if(!email||!pass){ setToast({type:"err",text:"من فضلك أدخل الإيميل وكلمة المرور."}); return; }
+    if(!email||!pass){ setToast({type:"err",text:"من فضلك أدخل الإيميل وكلمة مرور المنصة."}); return; }
     const {data, error} = await sb.auth.signInWithPassword({email, password:pass});
     if(error){ setToast({type:"err",text:supabaseErrorToArabic(error)}); return; }
     currentUser = {id:data.user.id, email:data.user.email};
+
+    /* ---- التحقق من ربط الجهاز (جهاز واحد فقط لكل حساب) ---- */
+    const deviceId = await getDeviceFingerprint();
+    const deviceName = guessDeviceLabel();
+    const status = await checkDeviceStatus(currentUser.email, deviceId);
+
+    if(status.status === "mismatch"){
+      await sb.auth.signOut();
+      currentUser = null;
+      pendingDevice = {
+        email, deviceId, deviceName, pass,
+        existingDeviceName: status.device_name,
+        firstActivationDate: status.first_activation_date,
+        cooldownDaysLeft: null
+      };
+      modal = "device-blocked";
+      render();
+      return;
+    }
+    if(status.status === "disabled"){
+      await sb.auth.signOut();
+      currentUser = null;
+      modal = null;
+      setToast({type:"err",text:"تم تعطيل تفعيل هذا الحساب من الإدارة. تواصل مع الدعم عبر واتساب."});
+      return;
+    }
+    if(status.status === "none"){
+      pendingDevice = {email, deviceId, deviceName, pass};
+      modal = "device-confirm";
+      render();
+      return;
+    }
+    /* status === "match" (نفس الجهاز المرتبط) أو "unavailable" (لم يتم تنفيذ SQL بعد،
+       فلا نمنع أحداً حفاظاً على استمرار عمل المستخدمين الحاليين) */
     await ensureStudentRow(currentUser.id, currentUser.email);
     grants = await getGrants(currentUser.email);
     completedLessons = await getCompletedLessons(currentUser.email);
     lastWatchMap = await getLastWatchMap(currentUser.email);
     modal=null;
     setToast({type:"ok",text:"تم تسجيل الدخول بنجاح."});
+  });
+
+  act('[data-action="device-confirm-yes"]', async ()=>{
+    const d = pendingDevice;
+    if(!d || !currentUser){ setToast({type:"err",text:"انتهت الجلسة، سجّل الدخول مرة أخرى."}); modal=null; render(); return; }
+    const r = await activateDeviceOnServer(d.email, d.deviceId, d.deviceName);
+    if(!r.ok){ setToast({type:"err",text:"تعذّر تفعيل الجهاز، حاول مرة أخرى."}); return; }
+    await finishLoginSuccess("تم تسجيل الدخول وتفعيل هذا الجهاز بنجاح.");
+    render();
+  });
+
+  act('[data-action="device-confirm-no"]', async ()=>{
+    await sb.auth.signOut();
+    currentUser=null; grants=[]; completedLessons=[]; lastWatchMap={};
+    pendingDevice=null; modal=null;
+    setToast({type:"err",text:"تم إلغاء تسجيل الدخول. تفعيل الجهاز مطلوب لإكمال الدخول."});
+    render();
+  });
+
+  act('[data-action="device-transfer"]', async ()=>{
+    const d = pendingDevice;
+    if(!d){ modal=null; render(); return; }
+    const res = await transferDeviceOnServer(d.email, d.deviceId, d.deviceName);
+    if(res.status === "transferred"){
+      if(d.pass){
+        const {data, error} = await sb.auth.signInWithPassword({email:d.email, password:d.pass});
+        if(!error && data && data.user){
+          currentUser = {id:data.user.id, email:data.user.email};
+          await finishLoginSuccess("تم نقل التفعيل إلى هذا الجهاز وتسجيل الدخول بنجاح.");
+        } else {
+          pendingDevice=null; modal=null;
+          setToast({type:"ok",text:"تم نقل التفعيل بنجاح، سجّل الدخول مرة أخرى."});
+        }
+      } else {
+        pendingDevice=null; modal=null;
+        setToast({type:"ok",text:"تم نقل التفعيل بنجاح، سجّل الدخول مرة أخرى."});
+      }
+    } else if(res.status === "cooldown"){
+      pendingDevice = {...d, cooldownDaysLeft: res.days_left};
+      setToast({type:"err",text:`لا يمكن نقل التفعيل الآن. المتبقي ${res.days_left} يوم/أيام.`});
+    } else {
+      setToast({type:"err",text:"تعذّر نقل التفعيل، حاول مرة أخرى لاحقاً أو تواصل مع الدعم."});
+    }
+    render();
   });
 
   act('[data-action="do-register"]', async ()=>{
@@ -1905,6 +2230,32 @@ function bindEvents(){
       return;
     }
     currentUser = {id:data.user.id, email:data.user.email};
+
+    /* حساب جديد = عادةً أول تسجيل دخول، لكن نتحقق بنفس منطق الجهاز حفاظاً على
+       الاتساق (مثلاً لو تم إنشاء الحساب مسبقاً من جهاز آخر بواسطة الإدمن). */
+    const deviceId = await getDeviceFingerprint();
+    const deviceName = guessDeviceLabel();
+    const status = await checkDeviceStatus(currentUser.email, deviceId);
+
+    if(status.status === "mismatch"){
+      await sb.auth.signOut();
+      currentUser = null;
+      pendingDevice = {
+        email, deviceId, deviceName, pass,
+        existingDeviceName: status.device_name,
+        firstActivationDate: status.first_activation_date,
+        cooldownDaysLeft: null
+      };
+      modal = "device-blocked";
+      render();
+      return;
+    }
+    if(status.status === "none"){
+      pendingDevice = {email, deviceId, deviceName, pass};
+      modal = "device-confirm";
+      render();
+      return;
+    }
     await ensureStudentRow(currentUser.id, currentUser.email);
     grants = [];
     completedLessons = [];
@@ -1927,7 +2278,39 @@ function bindEvents(){
     else setToast({type:"err",text:"كلمة مرور خاطئة."});
   });
   act('[data-action="admin-logout"]', ()=>{ adminUnlocked=false; render(); });
-  act('[data-action="admin-tab"]', function(){ adminTab=this.getAttribute("data-tab"); render(); });
+  act('[data-action="admin-tab"]', function(){
+    adminTab=this.getAttribute("data-tab");
+    if(adminTab==="devices"){ adminDevicesLoaded=false; }
+    render();
+  });
+
+  /* ---- admin: إدارة أجهزة الطلاب ---- */
+  act('[data-action="devices-refresh"]', ()=>{ adminDevicesLoaded=false; render(); });
+  act('[data-action="device-admin-reset"]', async function(){
+    const email = this.dataset.email;
+    if(!confirm(`إعادة تعيين جهاز الطالب ${email}؟ سيُطلب منه تفعيل جهاز جديد عند تسجيل الدخول التالي.`)) return;
+    const r = await adminResetDevice(email);
+    if(r.ok){ setToast({type:"ok",text:"تم إعادة تعيين الجهاز بنجاح."}); adminDevicesLoaded=false; render(); }
+    else setToast({type:"err",text:"تعذّر إعادة تعيين الجهاز."});
+  });
+  act('[data-action="device-admin-disable"]', async function(){
+    const email = this.dataset.email;
+    const r = await adminSetStatus(email, "disabled");
+    if(r.ok){ setToast({type:"ok",text:"تم تعطيل تفعيل الحساب."}); adminDevicesLoaded=false; render(); }
+    else setToast({type:"err",text:"تعذّر تعطيل الحساب."});
+  });
+  act('[data-action="device-admin-enable"]', async function(){
+    const email = this.dataset.email;
+    const r = await adminSetStatus(email, "active");
+    if(r.ok){ setToast({type:"ok",text:"تم إعادة تفعيل الحساب."}); adminDevicesLoaded=false; render(); }
+    else setToast({type:"err",text:"تعذّر إعادة التفعيل."});
+  });
+  act('[data-action="device-admin-allow-transfer"]', async function(){
+    const email = this.dataset.email;
+    const r = await adminAllowTransferNow(email);
+    if(r.ok){ setToast({type:"ok",text:"تم السماح بنقل التفعيل فوراً لهذا الطالب."}); adminDevicesLoaded=false; render(); }
+    else setToast({type:"err",text:"تعذّر تنفيذ العملية."});
+  });
 
   /* ---- lesson CRUD (Supabase "lessons" table) ---- */
   act('[data-action="new-lesson-form"]', function(){
